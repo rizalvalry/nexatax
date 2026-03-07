@@ -78,10 +78,12 @@ class HomeController extends Controller
 
         $testimonials = Testimonial::where('is_active', true)->orderBy('order')->get();
 
+        $logo = optional(Setting::where('key', 'site.logo')->first())->value ?? ['image' => null];
+
         return view('home', compact(
             'banner', 'company', 'menu', 'ourfirm', 'consultation',
             'stats', 'social', 'whatsapp', 'footer', 'contactForm',
-            'services', 'testimonials'
+            'services', 'testimonials', 'logo'
         ));
     }
 }

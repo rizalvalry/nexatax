@@ -4,298 +4,302 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>NEXA TAX - {{ $company['tagline'] ?? 'Integrity and Loyalty' }}</title>
+    <title>{{ $company['name'] ?? 'NEXA TAX' }} - {{ $company['tagline'] ?? 'Integrity and Loyalty' }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400;1,9..40,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: {
-                            50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc',
-                            400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1',
-                            800: '#075985', 900: '#0c4a6e', 950: '#082f49', brand: '#007AFF', accent: '#00D1FF',
+                        brand: {
+                            DEFAULT: '#0047AB',
+                            dark: '#003380',
+                            light: '#e8f0fe',
+                            50: '#f0f5ff',
+                        },
+                        navy: {
+                            DEFAULT: '#0d1b2a',
+                            light: '#1b2d45',
                         },
                     },
                     fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                        serif: ['"Playfair Display"', 'serif'],
+                        heading: ['"DM Sans"', 'sans-serif'],
+                        body: ['"Inter"', 'sans-serif'],
                     },
-                    boxShadow: {
-                        'card': '0 10px 30px -5px rgba(0, 122, 255, 0.1)',
-                        'elevated': '0 20px 40px -10px rgba(0, 0, 0, 0.15)',
-                    }
                 }
             }
         }
     </script>
     <style>
         html { scroll-behavior: smooth; }
-        .bg-grid-dark {
-            background-image: radial-gradient(circle, #ffffff10 1px, transparent 1px);
-            background-size: 30px 30px;
-        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'DM Sans', sans-serif; }
     </style>
 </head>
-<body class="min-h-screen bg-white font-sans text-slate-900">
-
-    {{-- ==================== TOP BAR ==================== --}}
-    <div class="bg-slate-950 text-white text-[10px] font-bold tracking-widest py-3 px-6 hidden md:block">
-        <div class="max-w-7xl mx-auto flex justify-between items-center opacity-80">
-            <div class="flex gap-8">
-                <span>{{ $company['office_hours'] ?? 'Mon-Fri 08:00 - 17:00' }}</span>
-                <span>{{ $company['phone'] ?? '+(62) 21-80868212' }}</span>
-            </div>
-            <div class="flex gap-4">
-                <a href="{{ $social['facebook'] ?? '#' }}" class="hover:text-primary-brand">FB</a>
-                <a href="{{ $social['instagram'] ?? '#' }}" class="hover:text-primary-brand">IG</a>
-            </div>
-        </div>
-    </div>
+<body class="min-h-screen bg-white text-gray-700">
 
     {{-- ==================== NAVBAR ==================== --}}
-    <nav class="bg-white border-b border-slate-100 py-4 sticky top-0 z-50" x-data="{ mobileOpen: false }">
-        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            {{-- Brand Logo --}}
-            <div class="flex items-center gap-2">
-                <div class="w-10 h-10 bg-primary-brand flex items-center justify-center rounded-sm rotate-45 hover:rotate-90 transition-transform duration-500">
-                    <div class="w-5 h-5 border-2 border-white -rotate-45"></div>
-                </div>
-                <div class="flex flex-col leading-none">
-                    <span class="text-2xl font-black tracking-tighter text-slate-900">NEXA <span class="text-primary-brand">TAX</span></span>
-                    <span class="text-[0.6rem] font-bold tracking-[0.2em] uppercase text-slate-400">Consulting</span>
-                </div>
-            </div>
+    <nav class="bg-white border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center h-16 md:h-20">
+            {{-- Logo --}}
+            <a href="/" class="flex-shrink-0">
+                @if(!empty($logo['image']))
+                    <img src="{{ $logo['image'] }}" alt="{{ $company['name'] ?? 'NEXA TAX' }}" class="h-9 md:h-10 w-auto object-contain">
+                @else
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl font-extrabold text-navy font-heading tracking-tight">NEXA</span>
+                        <span class="text-brand font-extrabold text-2xl font-heading">TAX</span>
+                    </div>
+                @endif
+            </a>
 
             {{-- Desktop Nav --}}
-            <div class="hidden lg:flex items-center space-x-8">
-                @foreach($menu as $item)
-                <a href="{{ $item['url'] }}" class="text-xs font-bold text-slate-600 hover:text-primary-brand tracking-widest flex items-center gap-1 transition-colors">
-                    {{ $item['label'] }}
-                    @if($item['label'] === 'PRACTICE AREA')
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-                    @endif
+            <div class="hidden lg:flex items-center">
+                <a href="#contact" class="border border-gray-900 text-gray-900 text-sm font-semibold px-5 py-2 rounded hover:bg-gray-900 hover:text-white transition-all">
+                    Let's Talk
                 </a>
-                @endforeach
-                <a href="#contact" class="bg-primary-brand text-white text-[10px] font-black px-6 py-3 rounded-sm tracking-widest hover:bg-primary-700 transition-all shadow-lg shadow-primary-200">LET'S CONNECT</a>
             </div>
 
-            {{-- Mobile Hamburger --}}
-            <button @click="mobileOpen = !mobileOpen" class="lg:hidden text-slate-900">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <template x-if="!mobileOpen"><g><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></g></template>
-                    <template x-if="mobileOpen"><g><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></g></template>
-                </svg>
-            </button>
-        </div>
-
-        {{-- Mobile Menu --}}
-        <div x-show="mobileOpen" x-transition class="lg:hidden border-t border-slate-100 bg-white px-6 py-4 space-y-4">
-            @foreach($menu as $item)
-            <a href="{{ $item['url'] }}" @click="mobileOpen = false" class="block text-xs font-bold text-slate-600 hover:text-primary-brand tracking-widest">{{ $item['label'] }}</a>
-            @endforeach
-            <a href="#contact" @click="mobileOpen = false" class="block bg-primary-brand text-white text-[10px] font-black px-6 py-3 rounded-sm tracking-widest text-center">LET'S CONNECT</a>
+            {{-- Mobile: Let's Talk button --}}
+            <a href="#contact" class="lg:hidden border border-gray-900 text-gray-900 text-sm font-semibold px-4 py-1.5 rounded hover:bg-gray-900 hover:text-white transition-all">
+                Let's Talk
+            </a>
         </div>
     </nav>
 
     <main>
-        {{-- ==================== HERO SECTION ==================== --}}
+
+        {{-- ==================== HERO BANNER (Full-width image background) ==================== --}}
         @php $slides = $banner['slides'] ?? []; @endphp
-        <section class="relative bg-slate-50 overflow-hidden min-h-[500px] md:min-h-[750px] flex items-center" x-data="{ current: 0, total: {{ count($slides) }} }" x-init="setInterval(() => { current = (current + 1) % total }, 5000)">
-            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 items-center w-full relative z-10">
-                {{-- Left: Text --}}
-                <div class="py-16 md:py-24 text-center lg:text-left">
-                    <div class="bg-primary-brand text-white inline-block px-4 py-1.5 mb-8 text-[10px] md:text-xs font-black tracking-[0.2em] animate-bounce">{{ $banner['badge'] ?? 'NEXA TAX INDONESIA' }}</div>
-                    <h1 class="text-4xl sm:text-6xl md:text-8xl font-bold text-slate-900 leading-[1.05] mb-8 tracking-tighter">
-                        @foreach($slides as $i => $slide)
-                        <span x-show="current === {{ $i }}" x-transition.opacity.duration.500ms>{{ $slide['tagline_1'] ?? '' }} </span>
-                        @endforeach
-                        <span class="text-primary-brand">
-                            @foreach($slides as $i => $slide)
-                            <span x-show="current === {{ $i }}" x-transition.opacity.duration.500ms>{{ $slide['tagline_2'] ?? '' }}</span>
-                            @endforeach
-                        </span>
-                        <br>
-                        {{ $banner['line3'] ?? 'Active Creative' }}<br>
-                        <span class="italic font-serif font-light text-slate-400">{{ $banner['line4'] ?? 'Emphatic' }}</span>
-                    </h1>
-                    {{-- Nav Dots --}}
-                    <div class="flex justify-center lg:justify-start gap-3 mt-10 md:mt-16">
-                        @foreach($slides as $i => $slide)
-                        <button @click="current = {{ $i }}" :class="current === {{ $i }} ? 'w-12 bg-primary-brand' : 'w-2 bg-slate-300 hover:bg-slate-400'" class="h-2 transition-all duration-500 rounded-full"></button>
-                        @endforeach
-                    </div>
+        <section class="relative overflow-hidden bg-gray-900" x-data="{ current: 0, total: {{ count($slides) }} }" x-init="setInterval(() => { current = (current + 1) % total }, 6000)">
+            {{-- Background Images --}}
+            <div class="relative w-full h-[420px] sm:h-[480px] md:h-[540px] lg:h-[600px]">
+                @foreach($slides as $i => $slide)
+                <div x-show="current === {{ $i }}" x-transition:enter="transition-opacity ease-out duration-700" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-in duration-500" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0">
+                    <img src="{{ $slide['image'] ?? '' }}" alt="" class="w-full h-full object-cover">
                 </div>
+                @endforeach
+                {{-- Dark gradient overlay --}}
+                <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
 
-                {{-- Right: Images --}}
-                <div class="relative h-[400px] md:h-[600px] hidden lg:block">
-                    <div class="relative w-full h-full">
-                        @foreach($slides as $i => $slide)
-                        <div x-show="current === {{ $i }}" x-transition.opacity.duration.1000ms class="absolute inset-0">
-                            <img src="{{ $slide['image'] ?? '' }}" alt="Nexa Tax Slide {{ $i + 1 }}" class="w-full h-full object-cover rounded-sm shadow-2xl">
-                        </div>
-                        @endforeach
-                        <div class="absolute -bottom-6 -left-6 w-40 h-40 border-l-[12px] border-b-[12px] border-primary-brand/20 -z-10"></div>
-                    </div>
-                </div>
-            </div>
-            {{-- Background decoration --}}
-            <div class="absolute top-0 right-0 w-full lg:w-[45%] h-full bg-white -z-0 transform lg:skew-x-[-6deg] lg:translate-x-20 border-l border-slate-100"></div>
-        </section>
-
-        {{-- ==================== OUR FIRM SECTION ==================== --}}
-        <section id="ourfirm" class="relative pb-20 md:pb-32">
-            <div class="max-w-7xl mx-auto px-6 py-12 md:py-20 flex flex-col sm:flex-row justify-between items-center sm:items-end gap-4">
-                <div class="text-center sm:text-left">
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-2">{{ $ourfirm['title'] ?? 'Our Firm' }}</h2>
-                    <div class="w-12 h-1 bg-primary-brand mx-auto sm:mx-0"></div>
-                </div>
-                <button class="flex items-center gap-2 text-[10px] font-black tracking-widest text-slate-400 hover:text-primary-brand transition-colors">
-                    LEARN MORE
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                </button>
-            </div>
-            {{-- Blue strip --}}
-            <div class="absolute left-0 right-0 h-40 md:h-48 bg-primary-brand z-0"></div>
-            {{-- Cards --}}
-            <div class="max-w-7xl mx-auto px-6 relative z-10 -mt-8 md:-mt-10">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                    @foreach(($ourfirm['cards'] ?? []) as $card)
-                    <div class="bg-white p-8 md:p-10 shadow-elevated border-t-8 border-primary-brand hover:-translate-y-2 transition-transform duration-300">
-                        <h3 class="text-lg md:text-xl font-bold text-slate-900 mb-4 md:mb-6 text-center">{{ $card['title'] }}</h3>
-                        <p class="text-slate-500 text-sm leading-relaxed text-center font-light">{{ $card['description'] }}</p>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-        </section>
-
-        {{-- ==================== CONSULTATION SECTION ==================== --}}
-        <section id="consultation" class="py-20 md:py-32 bg-white overflow-hidden">
-            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-                {{-- Left: Text & Stats --}}
-                <div class="order-2 lg:order-1">
-                    <h2 class="text-3xl md:text-5xl font-bold text-slate-900 mb-10 md:mb-14 leading-tight tracking-tight">
-                        {{ $consultation['heading'] ?? "Let's Consult With Our" }} <br class="hidden md:block">
-                        <span class="relative inline-block">
-                            {{ $consultation['heading_highlight'] ?? 'Leading Experts.' }}
-                            <div class="absolute -bottom-2 left-0 w-12 h-1 bg-primary-brand"></div>
-                        </span>
-                    </h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-                        {{-- Stat 1 --}}
-                        <div class="bg-primary-brand p-8 md:p-12 text-center shadow-xl hover:translate-y-[-8px] transition-all duration-500">
-                            <div class="flex justify-center mb-5 text-white">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+                {{-- Text Overlay --}}
+                <div class="absolute inset-0 flex items-end">
+                    <div class="max-w-7xl mx-auto px-6 w-full pb-12 md:pb-16 lg:pb-20">
+                        <div class="max-w-2xl">
+                            {{-- Badge --}}
+                            <div class="inline-block bg-brand text-white text-[10px] sm:text-xs font-bold tracking-wider px-3 py-1 mb-4">
+                                {{ $banner['badge'] ?? 'NEXA TAX INDONESIA' }}
                             </div>
-                            <div class="text-5xl md:text-6xl font-black text-white mb-2">{{ $stats['projects'] ?? '111' }}</div>
-                            <div class="text-[10px] md:text-[12px] font-bold text-primary-100 uppercase tracking-[0.2em]">{{ $stats['projects_label'] ?? 'Project Completed' }}</div>
+                            {{-- Heading --}}
+                            <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight mb-4 font-heading">
+                                @foreach($slides as $i => $slide)
+                                <span x-show="current === {{ $i }}" x-transition.opacity.duration.500ms>
+                                    {{ $slide['tagline_1'] ?? '' }} {{ $slide['tagline_2'] ?? '' }}
+                                </span>
+                                @endforeach
+                            </h1>
+                            {{-- Description --}}
+                            <p class="text-gray-300 text-sm md:text-base leading-relaxed mb-6 max-w-lg">
+                                {{ $company['description'] ?? 'NEXA TAX aspires to be the foremost innovative Tax Consulting Firm.' }}
+                            </p>
+                            {{-- CTA Button --}}
+                            <a href="#consultation" class="inline-flex items-center gap-2 bg-brand text-white text-sm font-semibold px-6 py-3 hover:bg-brand-dark transition-colors">
+                                View Our Services
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                            </a>
                         </div>
-                        {{-- Stat 2 --}}
-                        <div class="bg-primary-brand p-8 md:p-12 text-center shadow-xl hover:translate-y-[-8px] transition-all duration-500">
-                            <div class="flex justify-center mb-5 text-white">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
-                            </div>
-                            <div class="text-5xl md:text-6xl font-black text-white mb-2">{{ $stats['experience'] ?? '5 +' }}</div>
-                            <div class="text-[10px] md:text-[12px] font-bold text-primary-100 uppercase tracking-[0.2em]">{{ $stats['experience_label'] ?? 'Years Experience' }}</div>
+
+                        {{-- Slide Navigation --}}
+                        @if(count($slides) > 1)
+                        <div class="flex items-center gap-3 mt-8">
+                            <button @click="current = current === 0 ? total - 1 : current - 1" class="w-10 h-10 border border-white/30 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7"/></svg>
+                            </button>
+                            <button @click="current = (current + 1) % total" class="w-10 h-10 border border-white/30 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                            </button>
                         </div>
+                        @endif
                     </div>
-                </div>
-                {{-- Right: Image --}}
-                <div class="relative order-1 lg:order-2">
-                    <div class="relative z-10 p-3 md:p-6 bg-white shadow-elevated inline-block w-full border border-slate-50">
-                        <div class="overflow-hidden relative">
-                            <img src="{{ $consultation['image'] ?? '' }}" alt="Consultation and Strategy" class="w-full h-[300px] md:h-[450px] object-cover hover:scale-105 transition-transform duration-1000">
-                            <div class="absolute inset-0 bg-primary-brand/5 pointer-events-none"></div>
-                        </div>
-                    </div>
-                    <div class="absolute -bottom-6 -right-6 w-1/2 h-1/2 bg-slate-50 -z-10"></div>
                 </div>
             </div>
         </section>
 
-        {{-- ==================== PRACTICE AREA SECTION ==================== --}}
-        <section id="practicearea" class="relative py-20 md:py-32 bg-slate-950 bg-grid-dark">
+        {{-- ==================== SERVICES SECTION (HNG-style: text left + cards right) ==================== --}}
+        <section id="practicearea" class="py-16 md:py-24">
             <div class="max-w-7xl mx-auto px-6">
-                <div class="text-center mb-16 md:mb-20">
-                    <div class="text-primary-brand font-bold text-[10px] tracking-[0.3em] mb-4 uppercase">Our Services</div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 md:mb-8">Practice Area</h2>
-                    <div class="w-16 h-1 bg-primary-brand mx-auto"></div>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+                    {{-- Left: Heading --}}
+                    <div class="lg:col-span-5">
+                        <h2 class="text-2xl md:text-3xl lg:text-[2rem] font-bold text-gray-900 leading-snug font-heading">
+                            We continue to provide the best services to all enterprises in
+                            <span class="text-brand">Indonesia</span> and even worldwide.
+                        </h2>
+                    </div>
+                    {{-- Right: Service Cards with blue left border --}}
+                    <div class="lg:col-span-7">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            @foreach($services as $service)
+                            <div class="border-l-4 border-brand bg-white pl-5 pr-4 py-5 hover:shadow-md transition-shadow">
+                                <div class="text-[10px] font-semibold text-gray-400 tracking-widest uppercase mb-2">SERVICES</div>
+                                <h3 class="text-base font-bold text-gray-900 mb-2 font-heading">{{ $service->title }}</h3>
+                                @if($service->description)
+                                <p class="text-gray-500 text-sm leading-relaxed">{{ Str::limit($service->description, 100) }}</p>
+                                @endif
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 max-w-5xl mx-auto">
-                    @foreach($services as $service)
-                    <div class="bg-primary-brand p-6 md:p-8 cursor-pointer hover:bg-white group text-center flex items-center justify-center min-h-[90px] md:min-h-[100px] transition-all duration-300">
-                        <h3 class="text-white font-black text-[10px] md:text-xs tracking-widest group-hover:text-primary-brand transition-colors">{{ $service->title }}</h3>
+            </div>
+        </section>
+
+        {{-- ==================== OUR FIRM SECTION (HNG-style: 2 big cards side by side) ==================== --}}
+        <section id="ourfirm" class="py-16 md:py-24 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-6">
+                @php $cards = $ourfirm['cards'] ?? []; @endphp
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    @foreach($cards as $index => $card)
+                    <div class="bg-white p-8 md:p-10 lg:p-12">
+                        {{-- Blue arrow icon --}}
+                        <div class="mb-6">
+                            <svg class="w-8 h-8 text-brand" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-10.975z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4 font-heading leading-tight">{{ $card['title'] }}</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-8">{{ $card['description'] }}</p>
+                        @if($index === 0)
+                        <a href="#contact" class="inline-flex items-center gap-2 border border-gray-300 text-gray-700 text-sm font-medium px-5 py-2.5 hover:border-brand hover:text-brand transition-colors">
+                            Free Consultation
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                        </a>
+                        @else
+                        <a href="#consultation" class="inline-flex items-center gap-2 border border-gray-300 text-gray-700 text-sm font-medium px-5 py-2.5 hover:border-brand hover:text-brand transition-colors">
+                            About Us
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                        </a>
+                        @endif
                     </div>
                     @endforeach
+                </div>
+            </div>
+        </section>
+
+        {{-- ==================== CONSULTATION / OUR CLIENT (HNG-style: image left + text right) ==================== --}}
+        <section id="consultation" class="py-16 md:py-24">
+            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-0 items-stretch">
+                {{-- Left: Image --}}
+                <div class="relative min-h-[300px] md:min-h-[400px]">
+                    <img src="{{ $consultation['image'] ?? '' }}" alt="Our Client" class="absolute inset-0 w-full h-full object-cover">
+                </div>
+                {{-- Right: Content --}}
+                <div class="bg-white p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+                    {{-- Blue arrow icon --}}
+                    <div class="mb-5">
+                        <svg class="w-7 h-7 text-brand" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-10.975z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-brand mb-3 font-heading">
+                        {{ $consultation['heading'] ?? "Let's Consult With Our" }}
+                    </h2>
+                    <p class="text-brand text-sm font-medium mb-6">
+                        {{ $consultation['heading_highlight'] ?? 'Leading Experts.' }}
+                    </p>
+
+                    {{-- Stats inline --}}
+                    <div class="flex items-center gap-8 mb-6">
+                        <div>
+                            <div class="text-3xl font-bold text-gray-900 font-heading">{{ $stats['projects'] ?? '111' }}</div>
+                            <div class="text-xs text-gray-500 mt-0.5">{{ $stats['projects_label'] ?? 'Project Completed' }}</div>
+                        </div>
+                        <div class="w-px h-10 bg-gray-200"></div>
+                        <div>
+                            <div class="text-3xl font-bold text-gray-900 font-heading">{{ $stats['experience'] ?? '5 +' }}</div>
+                            <div class="text-xs text-gray-500 mt-0.5">{{ $stats['experience_label'] ?? 'Years Experience' }}</div>
+                        </div>
+                    </div>
+
+                    {{-- First testimonial as quote --}}
+                    @if($testimonials->count() > 0)
+                    @php $firstTestimonial = $testimonials->first(); @endphp
+                    <blockquote class="border-l-2 border-gray-200 pl-4 mb-4">
+                        <p class="text-gray-600 text-sm leading-relaxed italic">"{{ Str::limit($firstTestimonial->quote, 200) }}"</p>
+                    </blockquote>
+                    <p class="text-gray-400 text-xs italic">{{ $firstTestimonial->author_name }} — {{ $firstTestimonial->author_title }}</p>
+                    @endif
                 </div>
             </div>
         </section>
 
         {{-- ==================== TESTIMONIALS SECTION ==================== --}}
-        <section id="testimonials" class="py-24 bg-white">
-            <div class="max-w-4xl mx-auto px-4 text-center">
-                <div class="flex justify-center mb-10">
-                    <div class="w-16 h-16 rounded-full border border-primary-200 flex items-center justify-center text-primary-brand">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
-                    </div>
+        @if($testimonials->count() > 1)
+        <section id="testimonials" class="py-16 md:py-24 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 font-heading">What Our Clients Say</h2>
                 </div>
-                <h2 class="text-4xl font-serif font-bold text-slate-900 mb-16">Testimonials</h2>
-                @foreach($testimonials as $testimonial)
-                <div class="space-y-6 mb-12">
-                    <p class="text-slate-600 text-lg italic leading-relaxed">"{{ $testimonial->quote }}"</p>
-                    <div class="pt-4">
-                        <h4 class="text-primary-brand font-bold text-lg">{{ $testimonial->author_name }}</h4>
-                        <p class="text-slate-400 text-sm">{{ $testimonial->author_title }}{{ $testimonial->author_company ? ', ' . $testimonial->author_company : '' }}</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                    @foreach($testimonials as $testimonial)
+                    <div class="bg-white p-7 border border-gray-100">
+                        <div class="text-brand mb-3 opacity-30">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-5 italic">"{{ $testimonial->quote }}"</p>
+                        <div class="border-t border-gray-100 pt-4">
+                            <h4 class="text-sm font-semibold text-gray-900 font-heading">{{ $testimonial->author_name }}</h4>
+                            <p class="text-gray-400 text-xs mt-0.5">{{ $testimonial->author_title }}{{ $testimonial->author_company ? ', ' . $testimonial->author_company : '' }}</p>
+                        </div>
                     </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
         </section>
+        @endif
 
         {{-- ==================== CONTACT SECTION ==================== --}}
-        <section id="contact" class="py-20 md:py-32 bg-slate-50">
+        <section id="contact" class="py-16 md:py-24">
             <div class="max-w-7xl mx-auto px-6">
-                <div class="text-center mb-16">
-                    <div class="text-primary-brand font-bold text-[10px] tracking-[0.3em] mb-4 uppercase">Contact Us</div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{{ $contactForm['title'] ?? 'Get In Touch' }}</h2>
-                    <p class="text-slate-500 text-sm max-w-xl mx-auto">{{ $contactForm['subtitle'] ?? 'Send us a message and we will get back to you shortly.' }}</p>
-                    <div class="w-16 h-1 bg-primary-brand mx-auto mt-6"></div>
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 font-heading">{{ $contactForm['title'] ?? 'Get In Touch' }}</h2>
+                    <p class="text-gray-500 text-sm mt-3 max-w-lg mx-auto">{{ $contactForm['subtitle'] ?? 'Send us a message and we will get back to you shortly.' }}</p>
                 </div>
 
                 <div class="max-w-2xl mx-auto">
                     @if(session('success'))
-                    <div class="bg-green-50 border border-green-200 text-green-700 px-6 py-4 rounded mb-8 text-sm">
+                    <div class="bg-green-50 border border-green-200 text-green-700 px-5 py-4 rounded mb-6 text-sm">
                         {{ session('success') }}
                     </div>
                     @endif
 
-                    <form action="{{ route('contact.store') }}" method="POST" class="space-y-6">
+                    <form action="{{ route('contact.store') }}" method="POST" class="space-y-5">
                         @csrf
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             <div>
                                 <input type="text" name="name" placeholder="{{ $contactForm['namePlaceholder'] ?? 'Full Name' }}" required
-                                    class="w-full px-4 py-3 border border-slate-200 rounded-sm text-sm focus:outline-none focus:border-primary-brand focus:ring-1 focus:ring-primary-brand transition @error('name') border-red-400 @enderror"
+                                    class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition @error('name') border-red-400 @enderror"
                                     value="{{ old('name') }}">
                                 @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                             </div>
                             <div>
                                 <input type="email" name="email" placeholder="{{ $contactForm['emailPlaceholder'] ?? 'Email Address' }}" required
-                                    class="w-full px-4 py-3 border border-slate-200 rounded-sm text-sm focus:outline-none focus:border-primary-brand focus:ring-1 focus:ring-primary-brand transition @error('email') border-red-400 @enderror"
+                                    class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition @error('email') border-red-400 @enderror"
                                     value="{{ old('email') }}">
                                 @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             <div>
                                 <input type="tel" name="phone" placeholder="{{ $contactForm['phonePlaceholder'] ?? 'Phone Number' }}"
-                                    class="w-full px-4 py-3 border border-slate-200 rounded-sm text-sm focus:outline-none focus:border-primary-brand focus:ring-1 focus:ring-primary-brand transition"
+                                    class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition"
                                     value="{{ old('phone') }}">
                             </div>
                             <div>
-                                <select name="service" class="w-full px-4 py-3 border border-slate-200 rounded-sm text-sm text-slate-500 focus:outline-none focus:border-primary-brand focus:ring-1 focus:ring-primary-brand transition">
+                                <select name="service" class="w-full px-4 py-3 border border-gray-200 text-sm text-gray-500 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition">
                                     <option value="">{{ $contactForm['servicePlaceholder'] ?? 'Select Service' }}</option>
                                     @foreach($services as $svc)
                                     <option value="{{ $svc->title }}" {{ old('service') == $svc->title ? 'selected' : '' }}>{{ $svc->title }}</option>
@@ -305,70 +309,100 @@
                         </div>
                         <div>
                             <textarea name="message" rows="5" placeholder="{{ $contactForm['messagePlaceholder'] ?? 'Your Message' }}" required
-                                class="w-full px-4 py-3 border border-slate-200 rounded-sm text-sm focus:outline-none focus:border-primary-brand focus:ring-1 focus:ring-primary-brand transition resize-none @error('message') border-red-400 @enderror">{{ old('message') }}</textarea>
+                                class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition resize-none @error('message') border-red-400 @enderror">{{ old('message') }}</textarea>
                             @error('message') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
-                        <div class="text-center">
-                            <button type="submit" class="bg-primary-brand text-white text-[10px] font-black px-10 py-4 rounded-sm tracking-widest hover:bg-primary-700 transition-all shadow-lg shadow-primary-200">
-                                {{ $contactForm['submitButton'] ?? 'SEND MESSAGE' }}
-                            </button>
-                        </div>
+                        <button type="submit" class="bg-brand text-white text-sm font-semibold px-8 py-3 hover:bg-brand-dark transition-colors tracking-wide">
+                            {{ $contactForm['submitButton'] ?? 'SEND MESSAGE' }}
+                        </button>
                     </form>
                 </div>
             </div>
         </section>
+
     </main>
 
-    {{-- ==================== FOOTER ==================== --}}
-    <footer class="bg-slate-950 text-white pt-24 pb-12">
+    {{-- ==================== FOOTER (HNG-style: dark navy, 3 columns) ==================== --}}
+    <footer class="bg-navy text-white pt-14 pb-6">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-20 mb-20">
-                {{-- Col 1: Brand --}}
-                <div class="space-y-8">
-                    <div class="flex items-center gap-2">
-                        <div class="w-10 h-10 bg-primary-brand flex items-center justify-center rounded-sm rotate-45 hover:rotate-90 transition-transform duration-500">
-                            <div class="w-5 h-5 border-2 border-white -rotate-45"></div>
-                        </div>
-                        <div class="flex flex-col leading-none">
-                            <span class="text-2xl font-black tracking-tighter text-white">NEXA <span class="text-primary-brand">TAX</span></span>
-                            <span class="text-[0.6rem] font-bold tracking-[0.2em] uppercase text-primary-200">Consulting</span>
-                        </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+                {{-- Col 1: Brand + Social --}}
+                <div>
+                    <div class="mb-4">
+                        @if(!empty($logo['image']))
+                            <img src="{{ $logo['image'] }}" alt="{{ $company['name'] ?? 'NEXA TAX' }}" class="h-9 w-auto object-contain brightness-0 invert">
+                        @else
+                            <div class="flex items-center gap-2">
+                                <span class="text-xl font-extrabold text-white font-heading tracking-tight">NEXA</span>
+                                <span class="text-brand text-xl font-extrabold font-heading">TAX</span>
+                            </div>
+                        @endif
                     </div>
-                    <p class="text-slate-400 text-xs leading-relaxed max-w-xs uppercase tracking-wider font-light">
+                    <p class="text-sm text-gray-400 leading-relaxed mb-5 font-heading font-medium">
+                        {{ $company['tagline'] ?? 'Integrity and Loyalty' }}
+                    </p>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6">
                         {{ $footer['description'] ?? 'NEXA TAX aspires to be the foremost innovative Tax Consulting Firm.' }}
                     </p>
+                    {{-- Social Icons --}}
+                    <div class="flex gap-3">
+                        <a href="{{ $social['facebook'] ?? '#' }}" target="_blank" class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand transition-colors">
+                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="{{ $social['instagram'] ?? '#' }}" target="_blank" class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand transition-colors">
+                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                        </a>
+                        @if(!empty($social['linkedin']))
+                        <a href="{{ $social['linkedin'] }}" target="_blank" class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand transition-colors">
+                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        </a>
+                        @endif
+                    </div>
                 </div>
-                {{-- Col 2: Quick Links --}}
-                <div class="space-y-8">
-                    <h3 class="text-primary-brand font-bold uppercase tracking-widest text-sm">Quick Links</h3>
-                    <ul class="space-y-4">
-                        @foreach(($footer['quick_links'] ?? []) as $link)
-                        <li><a href="{{ $link['url'] }}" class="text-slate-500 hover:text-white text-xs uppercase font-bold">{{ $link['label'] }}</a></li>
-                        @endforeach
-                    </ul>
+
+                {{-- Col 2: Company Info --}}
+                <div>
+                    <h3 class="text-sm font-semibold text-white mb-5 font-heading">{{ $company['name'] ?? 'NEXA TAX' }}</h3>
+                    <div class="space-y-3 text-sm text-gray-400 leading-relaxed">
+                        <p>{{ $company['address'] ?? 'Jakarta, Indonesia' }}</p>
+                        @if(!empty($company['phone']))
+                        <p>Whatsapp : {{ $company['phone'] }}</p>
+                        @endif
+                        @if(!empty($company['phone']))
+                        <p>Tel : {{ $company['phone'] }}</p>
+                        @endif
+                        @if(!empty($company['email']))
+                        <p>Email : {{ $company['email'] }}</p>
+                        @endif
+                    </div>
                 </div>
-                {{-- Col 3: Contact --}}
-                <div class="space-y-8">
-                    <h3 class="text-primary-brand font-bold uppercase tracking-widest text-sm">Contact</h3>
+
+                {{-- Col 3: Contact Form / Newsletter --}}
+                <div>
+                    <h3 class="text-sm font-semibold text-white mb-5 font-heading">Newsletter Sign Up</h3>
                     <div class="space-y-3">
-                        <p class="text-slate-400 text-xs">{{ $company['address'] ?? 'Jakarta, Indonesia' }}</p>
-                        <p class="text-slate-400 text-xs">{{ $company['phone'] ?? '' }}</p>
-                        <p class="text-slate-400 text-xs">{{ $company['email'] ?? '' }}</p>
+                        <input type="text" placeholder="Enter your Name" class="w-full bg-transparent border border-gray-600 text-sm text-white placeholder-gray-500 px-4 py-2.5 focus:outline-none focus:border-brand transition">
+                        <input type="email" placeholder="Enter your Email" class="w-full bg-transparent border border-gray-600 text-sm text-white placeholder-gray-500 px-4 py-2.5 focus:outline-none focus:border-brand transition">
+                        <button class="bg-brand text-white text-xs font-bold tracking-widest px-6 py-2.5 hover:bg-brand-dark transition-colors">
+                            SUBSCRIBE
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="border-t border-white/5 pt-12 text-[10px] text-center">
-                <p>&copy; {{ date('Y') }} NEXA TAX INDONESIA.</p>
+
+            {{-- Copyright --}}
+            <div class="border-t border-white/10 pt-6 text-center">
+                <p class="text-gray-500 text-xs">&copy; {{ date('Y') }} {{ $company['name'] ?? 'NEXA TAX Indonesia' }}. All rights reserved</p>
             </div>
         </div>
     </footer>
 
     {{-- ==================== WHATSAPP FLOATING BUTTON ==================== --}}
     @php $waNumber = $whatsapp['number'] ?? '622180868212'; @endphp
-    <a href="https://wa.me/{{ $waNumber }}" target="_blank" rel="noopener noreferrer"
-        class="fixed bottom-8 right-8 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform animate-bounce"
+    <a href="https://wa.me/{{ $waNumber }}{{ !empty($whatsapp['message']) ? '?text=' . urlencode($whatsapp['message']) : '' }}" target="_blank" rel="noopener noreferrer"
+        class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
         aria-label="Contact on WhatsApp">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
         </svg>
     </a>
