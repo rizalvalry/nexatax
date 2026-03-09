@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AboutController extends Controller
 {
@@ -42,12 +43,27 @@ class AboutController extends Controller
             'type' => 'json', 'group' => 'sections', 'label' => 'Our Firm Section',
         ]);
 
-        // Consultation
+        // Consultation - handle image upload
+        $oldConsultation = optional(Setting::where('key', 'site.consultation')->first())->value ?? [];
+        $consultationImage = $oldConsultation['image'] ?? '';
+
+        if ($request->hasFile('consultation_image_file')) {
+            $request->validate(['consultation_image_file' => 'image|mimes:png,jpg,jpeg,webp|max:5120']);
+
+            // Delete old image
+            if (!empty($consultationImage) && str_starts_with($consultationImage, '/storage/')) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $consultationImage));
+            }
+
+            $path = $request->file('consultation_image_file')->store('uploads/consultation', 'public');
+            $consultationImage = '/storage/' . $path;
+        }
+
         Setting::updateOrCreate(['key' => 'site.consultation'], [
             'value' => [
                 'heading' => $request->input('consultation_heading'),
                 'heading_highlight' => $request->input('consultation_highlight'),
-                'image' => $request->input('consultation_image'),
+                'image' => $consultationImage,
             ],
             'type' => 'json', 'group' => 'sections', 'label' => 'Consultation Section',
         ]);

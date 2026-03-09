@@ -2,7 +2,7 @@
 @section('title', 'Company Info')
 
 @section('content')
-<form action="{{ route('admin.about.update') }}" method="POST" class="space-y-6">
+<form action="{{ route('admin.about.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
     @csrf
     {{-- Company --}}
     <div class="bg-white rounded-lg shadow p-6 space-y-4">
@@ -67,11 +67,18 @@
                 <label class="block text-sm font-semibold text-slate-700 mb-1">Heading Highlight</label>
                 <input type="text" name="consultation_highlight" value="{{ $consultation['heading_highlight'] ?? '' }}" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary-brand">
             </div>
-            <div class="md:col-span-2">
-                <label class="block text-sm font-semibold text-slate-700 mb-1">Image URL</label>
-                <input type="url" name="consultation_image" value="{{ $consultation['image'] ?? '' }}" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary-brand">
-            </div>
         </div>
+        <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Consultation Image</label>
+            <input type="file" name="consultation_image_file" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary-brand file:text-white hover:file:bg-blue-700">
+            <p class="text-xs text-slate-400 mt-1">PNG, JPG, WebP. Max 5MB. Kosongkan jika tidak ingin mengubah gambar.</p>
+        </div>
+        @if(!empty($consultation['image']))
+        <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Current Image</label>
+            <img src="{{ $consultation['image'] }}" alt="Consultation Preview" class="h-40 object-cover rounded border">
+        </div>
+        @endif
     </div>
 
     <button type="submit" class="bg-primary-brand text-white font-bold px-8 py-3 rounded text-sm hover:bg-blue-700 transition">Simpan</button>

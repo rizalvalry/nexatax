@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BannerController extends Controller
 {
@@ -25,11 +26,29 @@ class BannerController extends Controller
             'slides' => [],
         ];
 
-        foreach ($request->input('slides', []) as $slide) {
+        $oldBanner = optional(Setting::where('key', 'site.banner')->first())->value ?? ['slides' => []];
+        $oldSlides = $oldBanner['slides'] ?? [];
+
+        foreach ($request->input('slides', []) as $i => $slide) {
+            $imageUrl = $oldSlides[$i]['image'] ?? '';
+
+            // Handle file upload
+            if ($request->hasFile("slides.{$i}.image_file")) {
+                $request->validate(["slides.{$i}.image_file" => 'image|mimes:png,jpg,jpeg,webp|max:5120']);
+
+                // Delete old image if exists
+                if (!empty($imageUrl) && str_starts_with($imageUrl, '/storage/')) {
+                    Storage::disk('public')->delete(str_replace('/storage/', '', $imageUrl));
+                }
+
+                $path = $request->file("slides.{$i}.image_file")->store('uploads/banner', 'public');
+                $imageUrl = '/storage/' . $path;
+            }
+
             $data['slides'][] = [
                 'tagline_1' => $slide['tagline_1'] ?? '',
                 'tagline_2' => $slide['tagline_2'] ?? '',
-                'image' => $slide['image'] ?? '',
+                'image' => $imageUrl,
             ];
         }
 
