@@ -221,11 +221,11 @@
                 {{-- Right: Content --}}
                 <div class="bg-white p-8 md:p-12 lg:p-16 flex flex-col justify-center">
                     {{-- Blue arrow icon --}}
-                    <div class="mb-5">
+                    {{-- <div class="mb-5">
                         <svg class="w-7 h-7 text-brand" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-10.975z"/>
                         </svg>
-                    </div>
+                    </div> --}}
                     <h2 class="text-2xl md:text-3xl font-bold text-brand mb-3 font-heading">
                         {{ $consultation['heading'] ?? "Let's Consult With Our" }}
                     </h2>
