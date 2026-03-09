@@ -258,16 +258,33 @@
             </div>
         </section>
 
-        {{-- ==================== CLIENT LOGOS SECTION ==================== --}}
+        {{-- ==================== CLIENT LOGOS SECTION (Auto-scroll) ==================== --}}
         @if($clientLogos->count() > 0)
-        <section class="py-12 md:py-16 bg-white border-t border-gray-100">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="flex flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16">
+        <section class="py-14 md:py-20 bg-white border-t border-gray-100 overflow-hidden">
+            <div class="relative" x-data="{
+                offset: 0,
+                speed: 1,
+                itemWidth: 220,
+                totalItems: {{ $clientLogos->count() }},
+                get totalWidth() { return this.itemWidth * this.totalItems },
+                init() {
+                    const animate = () => {
+                        this.offset -= this.speed;
+                        if (Math.abs(this.offset) >= this.totalWidth) this.offset = 0;
+                        requestAnimationFrame(animate);
+                    };
+                    requestAnimationFrame(animate);
+                }
+            }">
+                <div class="flex" :style="'transform: translateX(' + offset + 'px)'">
+                    {{-- Duplicate logos for seamless loop --}}
+                    @for($loop_i = 0; $loop_i < 2; $loop_i++)
                     @foreach($clientLogos as $clientLogo)
-                    <div class="grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300">
-                        <img src="{{ $clientLogo->image }}" alt="{{ $clientLogo->name ?? 'Client' }}" class="h-8 md:h-10 w-auto object-contain">
+                    <div class="flex-shrink-0 w-[220px] flex items-center justify-center px-6">
+                        <img src="{{ $clientLogo->image }}" alt="{{ $clientLogo->name ?? 'Client' }}" class="h-14 md:h-16 max-w-[180px] w-auto object-contain grayscale hover:grayscale-0 opacity-50 hover:opacity-100 transition-all duration-300">
                     </div>
                     @endforeach
+                    @endfor
                 </div>
             </div>
         </section>
