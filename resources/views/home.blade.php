@@ -236,6 +236,21 @@
             </div>
         </section>
 
+        {{-- ==================== CLIENT LOGOS SECTION ==================== --}}
+        @if($clientLogos->count() > 0)
+        <section class="py-12 md:py-16 bg-white border-t border-gray-100">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="flex flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16">
+                    @foreach($clientLogos as $clientLogo)
+                    <div class="grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300">
+                        <img src="{{ $clientLogo->image }}" alt="{{ $clientLogo->name ?? 'Client' }}" class="h-8 md:h-10 w-auto object-contain">
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+        @endif
+
         {{-- ==================== TESTIMONIALS SECTION ==================== --}}
         @if($testimonials->count() > 1)
         <section id="testimonials" class="py-16 md:py-24 bg-gray-50">
@@ -253,6 +268,43 @@
                         <div class="border-t border-gray-100 pt-4">
                             <h4 class="text-sm font-semibold text-gray-900 font-heading">{{ $testimonial->author_name }}</h4>
                             <p class="text-gray-400 text-xs mt-0.5">{{ $testimonial->author_title }}{{ $testimonial->author_company ? ', ' . $testimonial->author_company : '' }}</p>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+        @endif
+
+        {{-- ==================== FEATURED INSIGHTS SECTION ==================== --}}
+        @if($insights->count() > 0)
+        <section class="py-16 md:py-24 bg-navy">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold text-white font-heading">Featured Insights</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                    @foreach($insights as $insight)
+                    <div class="bg-white rounded overflow-hidden">
+                        @if($insight->thumbnail)
+                        <div class="relative h-44 overflow-hidden">
+                            <img src="{{ $insight->thumbnail }}" alt="{{ $insight->title }}" class="w-full h-full object-cover">
+                            @if($insight->badge)
+                            <div class="absolute top-3 left-3 bg-brand text-white text-[10px] font-bold px-2 py-1 rounded">
+                                {{ $insight->badge }}
+                            </div>
+                            @endif
+                        </div>
+                        @endif
+                        <div class="p-5">
+                            <h3 class="text-sm font-bold text-gray-900 leading-snug mb-2 font-heading">{{ $insight->title }}</h3>
+                            @if($insight->published_date)
+                            <p class="text-xs text-gray-400 flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                {{ $insight->published_date->format('F d, Y') }}
+                            </p>
+                            @endif
+                            <p class="text-brand text-xs font-semibold mt-3">Read More</p>
                         </div>
                     </div>
                     @endforeach

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Setting;
 use App\Models\Service;
 use App\Models\Testimonial;
+use App\Models\ClientLogo;
+use App\Models\Insight;
 
 class HomeController extends Controller
 {
@@ -80,10 +82,14 @@ class HomeController extends Controller
 
         $logo = optional(Setting::where('key', 'site.logo')->first())->value ?? ['image' => null];
 
+        $clientLogos = ClientLogo::where('is_active', true)->orderBy('order')->get();
+
+        $insights = Insight::where('is_active', true)->orderBy('order')->take(3)->get();
+
         return view('home', compact(
             'banner', 'company', 'menu', 'ourfirm', 'consultation',
             'stats', 'social', 'whatsapp', 'footer', 'contactForm',
-            'services', 'testimonials', 'logo'
+            'services', 'testimonials', 'logo', 'clientLogos', 'insights'
         ));
     }
 }

@@ -55,5 +55,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Testimonials CRUD
         Route::resource('testimonials', App\Http\Controllers\Admin\TestimonialController::class);
+
+        // Client Logos
+        Route::get('/client-logos', [App\Http\Controllers\Admin\ClientLogoController::class, 'index'])->name('client-logos.index');
+        Route::post('/client-logos', [App\Http\Controllers\Admin\ClientLogoController::class, 'store'])->name('client-logos.store');
+        Route::delete('/client-logos/{id}', [App\Http\Controllers\Admin\ClientLogoController::class, 'destroy'])->name('client-logos.destroy');
+
+        // Insights
+        Route::get('/insights', [App\Http\Controllers\Admin\InsightController::class, 'index'])->name('insights.index');
+        Route::post('/insights', [App\Http\Controllers\Admin\InsightController::class, 'store'])->name('insights.store');
+        Route::put('/insights/{id}', [App\Http\Controllers\Admin\InsightController::class, 'update'])->name('insights.update');
+        Route::delete('/insights/{id}', [App\Http\Controllers\Admin\InsightController::class, 'destroy'])->name('insights.destroy');
     });
 });
