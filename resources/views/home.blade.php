@@ -36,6 +36,7 @@
         html { scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3, h4, h5, h6 { font-family: 'DM Sans', sans-serif; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="min-h-screen bg-white text-gray-700">
@@ -157,13 +158,27 @@
             </div>
         </section>
 
-        {{-- ==================== OUR FIRM SECTION (HNG-style: 2 big cards side by side) ==================== --}}
-        <section id="ourfirm" class="py-16 md:py-24 bg-gray-50">
+        {{-- ==================== OUR FIRM SECTION (Horizontal scroll like HNG.co.id) ==================== --}}
+        <section id="ourfirm" class="py-16 md:py-24 bg-gray-50" x-data="{ scrollEl: null }" x-init="scrollEl = $refs.cardScroll">
             <div class="max-w-7xl mx-auto px-6">
                 @php $cards = $ourfirm['cards'] ?? []; @endphp
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+
+                {{-- Scroll Navigation --}}
+                @if(count($cards) > 0)
+                <div class="flex items-center gap-3 mb-8">
+                    <button @click="scrollEl.scrollBy({ left: -400, behavior: 'smooth' })" class="w-10 h-10 border border-gray-300 flex items-center justify-center text-gray-600 hover:border-brand hover:text-brand transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7"/></svg>
+                    </button>
+                    <button @click="scrollEl.scrollBy({ left: 400, behavior: 'smooth' })" class="w-10 h-10 border border-gray-300 flex items-center justify-center text-gray-600 hover:border-brand hover:text-brand transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                    </button>
+                </div>
+                @endif
+
+                {{-- Horizontal Scrolling Cards --}}
+                <div x-ref="cardScroll" class="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide" style="-ms-overflow-style:none; scrollbar-width:none;">
                     @foreach($cards as $index => $card)
-                    <div class="bg-white overflow-hidden">
+                    <div class="bg-white flex-shrink-0 w-[85vw] sm:w-[400px] md:w-[440px] snap-start overflow-hidden">
                         {{-- Card Image --}}
                         @if(!empty($card['image']))
                         <div class="h-48 md:h-56 overflow-hidden">
@@ -171,7 +186,6 @@
                         </div>
                         @endif
                         <div class="p-8 md:p-10">
-                            {{-- Blue arrow icon --}}
                             <div class="mb-5">
                                 <svg class="w-7 h-7 text-brand" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-10.975z"/>
