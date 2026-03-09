@@ -82,9 +82,9 @@ class HomeController extends Controller
 
         $logo = optional(Setting::where('key', 'site.logo')->first())->value ?? ['image' => null];
 
-        $clientLogos = ClientLogo::where('is_active', true)->orderBy('order')->get();
+        $clientLogos = ClientLogo::where('is_active', 1)->orderBy('order')->get();
 
-        $insights = Insight::where('is_active', true)->orderBy('order')->take(3)->get();
+        $insights = Insight::where('is_active', 1)->orderBy('order')->take(3)->get();
 
         return view('home', compact(
             'banner', 'company', 'menu', 'ourfirm', 'consultation',

@@ -32,6 +32,7 @@ class InsightController extends Controller
             'badge' => $request->input('badge'),
             'published_date' => $request->input('published_date'),
             'order' => Insight::max('order') + 1,
+            'is_active' => true,
         ]);
 
         return back()->with('success', 'Insight berhasil ditambahkan.');

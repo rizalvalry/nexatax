@@ -28,6 +28,7 @@ class ClientLogoController extends Controller
             'name' => $request->input('name'),
             'image' => '/storage/' . $path,
             'order' => ClientLogo::max('order') + 1,
+            'is_active' => true,
         ]);
 
         return back()->with('success', 'Client logo berhasil ditambahkan.');
