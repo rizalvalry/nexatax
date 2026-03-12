@@ -374,6 +374,35 @@
 
     </main>
 
+    {{-- ==================== MAPS SECTION (above footer) ==================== --}}
+    @if(!empty($map['embed_url']))
+    <section class="relative">
+        {{-- Map --}}
+        <div class="relative w-full h-[350px] md:h-[420px]">
+            <iframe src="{{ $map['embed_url'] }}" class="absolute inset-0 w-full h-full" style="border:0; filter: saturate(0.8) contrast(1.1);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            {{-- Gradient overlay at bottom for smooth transition to footer --}}
+            <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-navy to-transparent"></div>
+        </div>
+        {{-- Floating location card --}}
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-12 z-10">
+            <div class="bg-white rounded-xl shadow-2xl px-6 py-5 flex items-center gap-4 min-w-[280px]">
+                <div class="flex-shrink-0 w-12 h-12 bg-brand/10 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-brand" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0C7.31 0 3.5 3.81 3.5 8.5c0 6.38 8.5 15.5 8.5 15.5s8.5-9.12 8.5-15.5C20.5 3.81 16.69 0 12 0zm0 12.5c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-gray-900 font-heading">{{ !empty($map['label']) ? $map['label'] : ($company['name'] ?? 'Our Office') }}</p>
+                    <p class="text-xs text-gray-500 mt-0.5">{{ $company['address'] ?? 'Jakarta, Indonesia' }}</p>
+                </div>
+                <a href="{{ $map['url'] ?? '#' }}" target="_blank" rel="noopener" class="flex-shrink-0 w-9 h-9 bg-brand rounded-full flex items-center justify-center text-white hover:bg-brand-dark transition-colors ml-2" title="Open in Google Maps">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6m4-3h6v6m-11 5L21 3"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+    @endif
+
     {{-- ==================== FOOTER (HNG-style: dark navy, 3 columns) ==================== --}}
     <footer class="bg-navy text-white pt-14 pb-6">
         <div class="max-w-7xl mx-auto px-6">

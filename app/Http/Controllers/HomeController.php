@@ -86,10 +86,16 @@ class HomeController extends Controller
 
         $insights = Insight::where('is_active', 1)->orderBy('order')->take(3)->get();
 
+        $map = optional(Setting::where('key', 'site.map')->first())->value ?? [
+            'url' => 'https://maps.app.goo.gl/ciKg7T4MQhTrzXeW8',
+            'embed_url' => 'https://maps.google.com/maps?q=https%3A%2F%2Fmaps.app.goo.gl%2FciKg7T4MQhTrzXeW8&output=embed',
+            'label' => '',
+        ];
+
         return view('home', compact(
             'banner', 'company', 'menu', 'ourfirm', 'consultation',
             'stats', 'social', 'whatsapp', 'footer', 'contactForm',
-            'services', 'testimonials', 'logo', 'clientLogos', 'insights'
+            'services', 'testimonials', 'logo', 'clientLogos', 'insights', 'map'
         ));
     }
 }
