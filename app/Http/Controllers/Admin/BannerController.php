@@ -12,45 +12,35 @@ class BannerController extends Controller
     public function index()
     {
         $banner = optional(Setting::where('key', 'site.banner')->first())->value ?? [
-            'slides' => [], 'badge' => 'NEXA TAX INDONESIA', 'line3' => 'Active Creative', 'line4' => 'Emphatic',
+            'badge' => 'NEXA TAX INDONESIA', 'line3' => 'Active Creative', 'line4' => 'Emphatic', 'video' => '',
         ];
         return view('admin.banner', compact('banner'));
     }
 
     public function update(Request $request)
     {
+        $oldBanner = optional(Setting::where('key', 'site.banner')->first())->value ?? [];
+        $videoUrl = $oldBanner['video'] ?? '';
+
+        // Handle video upload
+        if ($request->hasFile('video_file')) {
+            $request->validate(['video_file' => 'file|mimes:mp4,webm|max:51200']);
+
+            // Delete old video if exists
+            if (!empty($videoUrl) && str_starts_with($videoUrl, '/storage/')) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $videoUrl));
+            }
+
+            $path = $request->file('video_file')->store('uploads/banner', 'public');
+            $videoUrl = '/storage/' . $path;
+        }
+
         $data = [
             'badge' => $request->input('badge', 'NEXA TAX INDONESIA'),
             'line3' => $request->input('line3', 'Active Creative'),
             'line4' => $request->input('line4', 'Emphatic'),
-            'slides' => [],
+            'video' => $videoUrl,
         ];
-
-        $oldBanner = optional(Setting::where('key', 'site.banner')->first())->value ?? ['slides' => []];
-        $oldSlides = $oldBanner['slides'] ?? [];
-
-        foreach ($request->input('slides', []) as $i => $slide) {
-            $imageUrl = $oldSlides[$i]['image'] ?? '';
-
-            // Handle file upload
-            if ($request->hasFile("slides.{$i}.image_file")) {
-                $request->validate(["slides.{$i}.image_file" => 'image|mimes:png,jpg,jpeg,webp|max:5120']);
-
-                // Delete old image if exists
-                if (!empty($imageUrl) && str_starts_with($imageUrl, '/storage/')) {
-                    Storage::disk('public')->delete(str_replace('/storage/', '', $imageUrl));
-                }
-
-                $path = $request->file("slides.{$i}.image_file")->store('uploads/banner', 'public');
-                $imageUrl = '/storage/' . $path;
-            }
-
-            $data['slides'][] = [
-                'tagline_1' => $slide['tagline_1'] ?? '',
-                'tagline_2' => $slide['tagline_2'] ?? '',
-                'image' => $imageUrl,
-            ];
-        }
 
         Setting::updateOrCreate(['key' => 'site.banner'], ['value' => $data, 'type' => 'json', 'group' => 'banner', 'label' => 'Hero Banner']);
 

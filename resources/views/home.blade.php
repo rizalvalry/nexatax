@@ -72,16 +72,14 @@
 
     <main>
 
-        {{-- ==================== HERO BANNER (Full-width image background) ==================== --}}
-        @php $slides = $banner['slides'] ?? []; @endphp
-        <section class="relative overflow-hidden bg-gray-900" x-data="{ current: 0, total: {{ count($slides) }} }" x-init="setInterval(() => { current = (current + 1) % total }, 6000)">
-            {{-- Background Images --}}
+        {{-- ==================== HERO BANNER (Video background) ==================== --}}
+        <section class="relative overflow-hidden bg-gray-900">
             <div class="relative w-full h-[420px] sm:h-[480px] md:h-[540px] lg:h-[600px]">
-                @foreach($slides as $i => $slide)
-                <div x-show="current === {{ $i }}" x-transition:enter="transition-opacity ease-out duration-700" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-in duration-500" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0">
-                    <img src="{{ $slide['image'] ?? '' }}" alt="" class="w-full h-full object-cover">
-                </div>
-                @endforeach
+                {{-- Video Background --}}
+                @php $bannerVideo = !empty($banner['video']) ? $banner['video'] : asset('assets/banner-jakarta-video.mp4'); @endphp
+                <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover">
+                    <source src="{{ $bannerVideo }}" type="video/mp4">
+                </video>
                 {{-- Dark gradient overlay --}}
                 <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
@@ -96,11 +94,7 @@
                             </div>
                             {{-- Heading --}}
                             <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight mb-4 font-heading">
-                                @foreach($slides as $i => $slide)
-                                <span x-show="current === {{ $i }}" x-transition.opacity.duration.500ms>
-                                    {{ $slide['tagline_1'] ?? '' }} {{ $slide['tagline_2'] ?? '' }}
-                                </span>
-                                @endforeach
+                                {{ $banner['line3'] ?? 'Active Creative' }} {{ $banner['line4'] ?? 'Emphatic' }}
                             </h1>
                             {{-- Description --}}
                             <p class="text-gray-300 text-sm md:text-base leading-relaxed mb-6 max-w-lg">
@@ -112,18 +106,6 @@
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
                             </a>
                         </div>
-
-                        {{-- Slide Navigation --}}
-                        @if(count($slides) > 1)
-                        <div class="flex items-center gap-3 mt-8">
-                            <button @click="current = current === 0 ? total - 1 : current - 1" class="w-10 h-10 border border-white/30 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7"/></svg>
-                            </button>
-                            <button @click="current = (current + 1) % total" class="w-10 h-10 border border-white/30 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
-                            </button>
-                        </div>
-                        @endif
                     </div>
                 </div>
             </div>
