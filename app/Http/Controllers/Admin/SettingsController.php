@@ -82,24 +82,28 @@ class SettingsController extends Controller
             return $url;
         }
 
-        // Extract place/coordinates from various Google Maps URL formats
-        // Format: https://www.google.com/maps/place/.../@lat,lng,zoom
+        // Extract place name and coordinates from full Google Maps URL
+        // Format: https://www.google.com/maps/place/Place+Name/@lat,lng,zoom
+        if (preg_match('/place\/([^\/\?@]+)/', $url, $placeMatch)) {
+            $placeName = urldecode(str_replace('+', ' ', $placeMatch[1]));
+
+            // Also try to extract coordinates for precision
+            if (preg_match('/@(-?\d+\.\d+),(-?\d+\.\d+)/', $url, $coordMatch)) {
+                $query = urlencode($placeName) . '&center=' . $coordMatch[1] . ',' . $coordMatch[2];
+            } else {
+                $query = urlencode($placeName);
+            }
+
+            return "https://maps.google.com/maps?q=" . urlencode($placeName) . "&t=&z=17&ie=UTF8&iwloc=&output=embed";
+        }
+
+        // Extract coordinates from URL with @lat,lng
         if (preg_match('/@(-?\d+\.\d+),(-?\d+\.\d+)/', $url, $matches)) {
-            $lat = $matches[1];
-            $lng = $matches[2];
-            return "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3000!2d{$lng}!3d{$lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sid!4v1";
+            return "https://maps.google.com/maps?q={$matches[1]},{$matches[2]}&t=&z=17&ie=UTF8&iwloc=&output=embed";
         }
 
-        // Short link or other format - use the place query embed
-        // Extract place ID or query from URL
-        if (preg_match('/place\/([^\/\?@]+)/', $url, $matches)) {
-            $query = urlencode(str_replace('+', ' ', $matches[1]));
-            return "https://www.google.com/maps/embed/v1/place?key=&q={$query}";
-        }
-
-        // For short links (maps.app.goo.gl) or unrecognized formats, use search embed
-        // We'll encode the entire URL as a query parameter
-        $encodedUrl = urlencode($url);
-        return "https://maps.google.com/maps?q={$encodedUrl}&output=embed";
+        // For short links or any other format, use query embed
+        $query = urlencode($url);
+        return "https://maps.google.com/maps?q={$query}&t=&z=17&ie=UTF8&iwloc=&output=embed";
     }
 }

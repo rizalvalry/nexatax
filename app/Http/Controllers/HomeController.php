@@ -88,8 +88,8 @@ class HomeController extends Controller
 
         $map = optional(Setting::where('key', 'site.map')->first())->value ?? [
             'url' => 'https://maps.app.goo.gl/ciKg7T4MQhTrzXeW8',
-            'embed_url' => 'https://maps.google.com/maps?q=https%3A%2F%2Fmaps.app.goo.gl%2FciKg7T4MQhTrzXeW8&output=embed',
-            'label' => '',
+            'embed_url' => 'https://maps.google.com/maps?q=Nexa+Tax+Indonesia&t=&z=17&ie=UTF8&iwloc=&output=embed',
+            'label' => 'Nexa Tax Indonesia',
         ];
 
         return view('home', compact(
