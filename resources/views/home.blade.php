@@ -140,53 +140,32 @@
             </div>
         </section>
 
-        {{-- ==================== OUR FIRM SECTION (Horizontal scroll like HNG.co.id) ==================== --}}
-        <section id="ourfirm" class="py-16 md:py-24 bg-gray-50" x-data="{ scrollEl: null }" x-init="scrollEl = $refs.cardScroll">
+        {{-- ==================== OUR FIRM SECTION (2-column text cards like HNG mockup) ==================== --}}
+        <section id="ourfirm" class="py-16 md:py-24 bg-gray-50">
             <div class="max-w-7xl mx-auto px-6">
                 @php $cards = $ourfirm['cards'] ?? []; @endphp
-
-                {{-- Scroll Navigation --}}
-                @if(count($cards) > 0)
-                <div class="flex items-center gap-3 mb-8">
-                    <button @click="scrollEl.scrollBy({ left: -400, behavior: 'smooth' })" class="w-10 h-10 border border-gray-300 flex items-center justify-center text-gray-600 hover:border-brand hover:text-brand transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7"/></svg>
-                    </button>
-                    <button @click="scrollEl.scrollBy({ left: 400, behavior: 'smooth' })" class="w-10 h-10 border border-gray-300 flex items-center justify-center text-gray-600 hover:border-brand hover:text-brand transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
-                    </button>
-                </div>
-                @endif
-
-                {{-- Horizontal Scrolling Cards --}}
-                <div x-ref="cardScroll" class="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide" style="-ms-overflow-style:none; scrollbar-width:none;">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
                     @foreach($cards as $index => $card)
-                    <div class="bg-white flex-shrink-0 w-[85vw] sm:w-[400px] md:w-[440px] snap-start overflow-hidden">
-                        {{-- Card Image --}}
-                        @if(!empty($card['image']))
-                        <div class="h-48 md:h-56 overflow-hidden">
-                            <img src="{{ $card['image'] }}" alt="{{ $card['title'] }}" class="w-full h-full object-cover">
+                    <div class="bg-white p-8 md:p-10">
+                        {{-- Blue arrow icon --}}
+                        <div class="mb-5">
+                            <svg class="w-7 h-7 text-brand" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-10.975z"/>
+                            </svg>
                         </div>
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4 font-heading leading-tight">{{ $card['title'] }}</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-8">{{ $card['description'] }}</p>
+                        @if($index === 0)
+                        <a href="#contact" class="inline-flex items-center gap-2 border border-gray-300 text-gray-700 text-sm font-medium px-5 py-2.5 hover:border-brand hover:text-brand transition-colors">
+                            Free Consultation
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                        </a>
+                        @else
+                        <a href="#consultation" class="inline-flex items-center gap-2 border border-gray-300 text-gray-700 text-sm font-medium px-5 py-2.5 hover:border-brand hover:text-brand transition-colors">
+                            About Us
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                        </a>
                         @endif
-                        <div class="p-8 md:p-10">
-                            <div class="mb-5">
-                                <svg class="w-7 h-7 text-brand" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-10.975z"/>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4 font-heading leading-tight">{{ $card['title'] }}</h3>
-                            <p class="text-gray-500 text-sm leading-relaxed mb-8">{{ $card['description'] }}</p>
-                            @if($index === 0)
-                            <a href="#contact" class="inline-flex items-center gap-2 border border-gray-300 text-gray-700 text-sm font-medium px-5 py-2.5 hover:border-brand hover:text-brand transition-colors">
-                                Free Consultation
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
-                            </a>
-                            @else
-                            <a href="#consultation" class="inline-flex items-center gap-2 border border-gray-300 text-gray-700 text-sm font-medium px-5 py-2.5 hover:border-brand hover:text-brand transition-colors">
-                                About Us
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
-                            </a>
-                            @endif
-                        </div>
                     </div>
                     @endforeach
                 </div>
