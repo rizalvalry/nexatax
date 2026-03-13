@@ -111,40 +111,47 @@
             </div>
         </section>
 
-        {{-- ==================== SERVICES SECTION (Mockup: heading left + arrow nav, rounded cards right) ==================== --}}
-        <section id="practicearea" class="py-16 md:py-24 bg-white" x-data="{ page: 0, perPage: 2, get totalPages() { return Math.ceil({{ $services->count() }} / this.perPage) } }">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+        {{-- ==================== SERVICES SECTION ==================== --}}
+        <section id="practicearea" class="relative py-14 md:py-20 bg-white overflow-hidden" x-data="{ page: 0, perPage: 2, get totalPages() { return Math.ceil({{ $services->count() }} / this.perPage) } }">
+            {{-- Subtle background accent --}}
+            <div class="absolute top-0 right-0 w-1/2 h-full opacity-[0.03]">
+                <svg viewBox="0 0 600 600" fill="none" class="w-full h-full"><circle cx="300" cy="300" r="280" stroke="#0047AB" stroke-width="1"/><circle cx="300" cy="300" r="200" stroke="#0047AB" stroke-width="1"/><circle cx="300" cy="300" r="120" stroke="#0047AB" stroke-width="1"/></svg>
+            </div>
+            <div class="relative max-w-7xl mx-auto px-6">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                     {{-- Left: Heading + Arrows --}}
                     <div class="lg:col-span-5">
-                        <h2 class="text-2xl md:text-3xl lg:text-[2rem] font-bold text-gray-900 leading-snug font-heading">
+                        <div class="text-[10px] font-bold text-brand tracking-[0.2em] uppercase mb-4">Our Practice Areas</div>
+                        <h2 class="text-2xl md:text-3xl lg:text-[2rem] font-bold text-gray-900 leading-snug font-heading mb-4">
                             We continue to provide the best services to all enterprises in
                             <span class="text-brand">Indonesia and even worldwide.</span>
                         </h2>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-8 max-w-md">Delivering comprehensive tax, legal, and business advisory solutions with integrity and professional excellence.</p>
                         {{-- Arrow Navigation --}}
-                        <div class="flex items-center gap-6 mt-8">
-                            <button @click="page = page > 0 ? page - 1 : totalPages - 1" class="group">
-                                <svg class="w-8 h-8 text-gray-800 group-hover:text-brand transition-colors" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7"/></svg>
+                        <div class="flex items-center gap-4">
+                            <button @click="page = page > 0 ? page - 1 : totalPages - 1" class="w-11 h-11 border border-gray-300 rounded-full flex items-center justify-center text-gray-600 hover:border-brand hover:text-brand hover:bg-brand/5 transition-all">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7"/></svg>
                             </button>
-                            <button @click="page = (page + 1) % totalPages" class="group">
-                                <svg class="w-8 h-8 text-gray-800 group-hover:text-brand transition-colors" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                            <button @click="page = (page + 1) % totalPages" class="w-11 h-11 border border-gray-300 rounded-full flex items-center justify-center text-gray-600 hover:border-brand hover:text-brand hover:bg-brand/5 transition-all">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
                             </button>
+                            <span class="text-xs text-gray-400 ml-2 font-medium" x-text="(page + 1) + ' / ' + totalPages"></span>
                         </div>
                     </div>
-                    {{-- Right: Service Cards (rounded, bordered) --}}
+                    {{-- Right: Service Cards --}}
                     <div class="lg:col-span-7">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             @foreach($services as $si => $service)
                             <div x-show="Math.floor({{ $si }} / perPage) === page"
                                  x-transition:enter="transition ease-out duration-300"
-                                 x-transition:enter-start="opacity-0 translate-y-2"
+                                 x-transition:enter-start="opacity-0 translate-y-3"
                                  x-transition:enter-end="opacity-100 translate-y-0"
-                                 class="bg-white border border-gray-200 rounded-xl p-7 hover:shadow-lg hover:border-brand/20 transition-all duration-300">
-                                <div class="text-xs font-bold text-brand tracking-widest uppercase mb-5">SERVICES</div>
-                                <h3 class="text-lg font-bold text-gray-900 mb-3 font-heading">{{ $service->title }}</h3>
-                                @if($service->description)
-                                <p class="text-gray-500 text-sm leading-relaxed">{{ Str::limit($service->description, 120) }}</p>
-                                @endif
+                                 class="group bg-white border border-gray-200 rounded-2xl p-7 min-h-[240px] flex flex-col hover:shadow-xl hover:border-brand/30 hover:-translate-y-1 transition-all duration-300">
+                                <div class="text-[10px] font-bold text-brand tracking-[0.2em] uppercase mb-auto pb-4">SERVICES</div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900 mb-3 font-heading group-hover:text-brand transition-colors">{{ $service->title }}</h3>
+                                    <p class="text-gray-500 text-sm leading-relaxed">{{ $service->description ? Str::limit($service->description, 120) : 'Professional ' . strtolower($service->title) . ' services for individuals and entities in all aspects.' }}</p>
+                                </div>
                             </div>
                             @endforeach
                         </div>
@@ -153,17 +160,16 @@
             </div>
         </section>
 
-        {{-- ==================== DECORATIVE WAVE/MOUNTAIN TRANSITION ==================== --}}
-        <div class="relative w-full h-[180px] md:h-[260px] overflow-hidden bg-white">
-            <svg class="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 260" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                {{-- Mountain shapes in light blue tones --}}
-                <path d="M0 260L0 180L200 100L400 160L600 60L800 140L1000 40L1200 120L1440 80L1440 260Z" fill="#e8f4fa" fill-opacity="0.5"/>
-                <path d="M0 260L0 200L150 140L350 190L550 90L750 170L950 70L1150 150L1350 100L1440 130L1440 260Z" fill="#d4ecf7" fill-opacity="0.6"/>
-                <path d="M0 260L0 220L100 180L300 210L500 140L700 200L900 120L1100 180L1300 150L1440 170L1440 260Z" fill="#c2e3f2" fill-opacity="0.4"/>
+        {{-- ==================== GEOMETRIC TRANSITION (Services → Our Firm) ==================== --}}
+        <div class="relative w-full h-[100px] md:h-[140px] overflow-hidden bg-white">
+            <svg class="absolute bottom-0 left-0 w-full h-full" viewBox="0 0 1440 140" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0 140V90L360 50L720 90L1080 30L1440 70V140H0Z" fill="#e8f4fa" fill-opacity="0.6"/>
+                <path d="M0 140V110L480 60L960 100L1440 50V140H0Z" fill="#dceef7" fill-opacity="0.5"/>
+                <path d="M0 140V120L240 100L720 80L1200 110L1440 90V140H0Z" fill="#d0e8f4" fill-opacity="0.4"/>
             </svg>
         </div>
 
-        {{-- ==================== OUR FIRM SECTION (2-column, two-tone bg like HNG mockup) ==================== --}}
+        {{-- ==================== OUR FIRM SECTION ==================== --}}
         <section id="ourfirm" class="relative overflow-hidden">
             @php $cards = $ourfirm['cards'] ?? []; @endphp
             {{-- Two-tone background --}}
@@ -171,26 +177,28 @@
                 <div class="bg-[#e8f4fa]"></div>
                 <div class="bg-[#dceef7]"></div>
             </div>
+            {{-- Subtle pattern overlay --}}
+            <div class="absolute inset-0 opacity-[0.02]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%230047AB&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')"></div>
             <div class="relative max-w-7xl mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-2">
                     @foreach($cards as $index => $card)
-                    <div class="px-8 md:px-12 lg:px-16 py-16 md:py-24">
+                    <div class="px-8 md:px-12 lg:px-16 py-14 md:py-20">
                         {{-- Blue double-chevron icon --}}
-                        <div class="mb-6">
+                        <div class="mb-5">
                             <svg class="w-10 h-10" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8 28L20 16L8 4" stroke="#0047AB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M20 28L32 16L20 4" stroke="#0047AB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+                                <path d="M6 30L18 18L6 6" stroke="#0047AB" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M18 30L30 18L18 6" stroke="#0047AB" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
                             </svg>
                         </div>
-                        <h3 class="text-2xl md:text-3xl font-bold text-gray-900 mb-5 font-heading leading-tight">{{ $card['title'] }}</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed mb-10 max-w-md">{{ $card['description'] }}</p>
+                        <h3 class="text-2xl md:text-[1.75rem] font-bold text-gray-900 mb-4 font-heading leading-tight">{{ $card['title'] }}</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-8 max-w-sm">{{ $card['description'] }}</p>
                         @if($index === 0)
-                        <a href="#contact" class="inline-flex items-center gap-3 border border-gray-400 text-gray-700 text-sm font-medium px-6 py-3 rounded hover:border-brand hover:text-brand transition-colors">
+                        <a href="#contact" class="inline-flex items-center gap-3 border border-gray-400 text-gray-700 text-sm font-medium px-6 py-3 rounded hover:border-brand hover:text-brand hover:bg-white/50 transition-all">
                             Free Consultation
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
                         </a>
                         @else
-                        <a href="#consultation" class="inline-flex items-center gap-3 border border-gray-400 text-gray-700 text-sm font-medium px-6 py-3 rounded hover:border-brand hover:text-brand transition-colors">
+                        <a href="#consultation" class="inline-flex items-center gap-3 border border-gray-400 text-gray-700 text-sm font-medium px-6 py-3 rounded hover:border-brand hover:text-brand hover:bg-white/50 transition-all">
                             About Us
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
                         </a>
