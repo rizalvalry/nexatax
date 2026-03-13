@@ -3,6 +3,32 @@
 
 @section('content')
 <div class="space-y-8">
+    {{-- Services Section Text --}}
+    <form action="{{ route('admin.settings.update') }}" method="POST">
+        @csrf
+        <input type="hidden" name="section" value="servicesSection">
+        <div class="bg-white rounded-lg shadow p-6 space-y-4">
+            <h3 class="font-bold text-slate-800 text-lg">Services Section (Text)</h3>
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Label (kecil, di atas heading)</label>
+                <input type="text" name="services_label" value="{{ $servicesSection['label'] ?? 'Our Practice Areas' }}" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary-brand">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Heading (teks utama)</label>
+                <input type="text" name="services_heading" value="{{ $servicesSection['heading'] ?? 'We continue to provide the best services to all enterprises in' }}" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary-brand">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Heading Highlight (teks warna biru)</label>
+                <input type="text" name="services_heading_highlight" value="{{ $servicesSection['heading_highlight'] ?? 'Indonesia and even worldwide.' }}" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary-brand">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Deskripsi (paragraph di bawah heading)</label>
+                <textarea name="services_description" rows="2" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary-brand">{{ $servicesSection['description'] ?? 'Delivering comprehensive tax, legal, and business advisory solutions with integrity and professional excellence.' }}</textarea>
+            </div>
+            <button type="submit" class="bg-primary-brand text-white font-bold px-6 py-2 rounded text-sm hover:bg-blue-700 transition">Simpan Services Text</button>
+        </div>
+    </form>
+
     {{-- Stats --}}
     <form action="{{ route('admin.settings.update') }}" method="POST">
         @csrf

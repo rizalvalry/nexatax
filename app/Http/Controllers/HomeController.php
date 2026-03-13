@@ -78,6 +78,13 @@ class HomeController extends Controller
 
         $services = Service::where('is_active', true)->orderBy('order')->get();
 
+        $servicesSection = optional(Setting::where('key', 'site.servicesSection')->first())->value ?? [
+            'label' => 'Our Practice Areas',
+            'heading' => 'We continue to provide the best services to all enterprises in',
+            'heading_highlight' => 'Indonesia and even worldwide.',
+            'description' => 'Delivering comprehensive tax, legal, and business advisory solutions with integrity and professional excellence.',
+        ];
+
         $testimonials = Testimonial::where('is_active', true)->orderBy('order')->get();
 
         $logo = optional(Setting::where('key', 'site.logo')->first())->value ?? ['image' => null];
@@ -102,7 +109,7 @@ class HomeController extends Controller
         return view('home', compact(
             'banner', 'company', 'menu', 'ourfirm', 'consultation',
             'stats', 'social', 'whatsapp', 'footer', 'contactForm',
-            'services', 'testimonials', 'logo', 'clientLogos', 'insights', 'map', 'career'
+            'services', 'servicesSection', 'testimonials', 'logo', 'clientLogos', 'insights', 'map', 'career'
         ));
     }
 }

@@ -18,8 +18,9 @@ class SettingsController extends Controller
         $contactForm = optional(Setting::where('key', 'site.contactForm')->first())->value ?? [];
         $map = optional(Setting::where('key', 'site.map')->first())->value ?? [];
         $career = optional(Setting::where('key', 'site.career')->first())->value ?? [];
+        $servicesSection = optional(Setting::where('key', 'site.servicesSection')->first())->value ?? [];
 
-        return view('admin.settings', compact('stats', 'social', 'whatsapp', 'footer', 'menu', 'contactForm', 'map', 'career'));
+        return view('admin.settings', compact('stats', 'social', 'whatsapp', 'footer', 'menu', 'contactForm', 'map', 'career', 'servicesSection'));
     }
 
     public function update(Request $request)
@@ -76,6 +77,16 @@ class SettingsController extends Controller
                     'email' => $request->input('career_email', ''),
                 ],
                 'type' => 'json', 'group' => 'career', 'label' => 'Career',
+            ]);
+        } elseif ($section === 'servicesSection') {
+            Setting::updateOrCreate(['key' => 'site.servicesSection'], [
+                'value' => [
+                    'label' => $request->input('services_label', 'Our Practice Areas'),
+                    'heading' => $request->input('services_heading', ''),
+                    'heading_highlight' => $request->input('services_heading_highlight', ''),
+                    'description' => $request->input('services_description', ''),
+                ],
+                'type' => 'json', 'group' => 'sections', 'label' => 'Services Section',
             ]);
         }
 

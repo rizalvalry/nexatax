@@ -121,12 +121,12 @@
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                     {{-- Left: Heading + Arrows --}}
                     <div class="lg:col-span-5">
-                        <div class="text-[10px] font-bold text-brand tracking-[0.2em] uppercase mb-4">Our Practice Areas</div>
+                        <div class="text-[10px] font-bold text-brand tracking-[0.2em] uppercase mb-4">{{ $servicesSection['label'] ?? 'Our Practice Areas' }}</div>
                         <h2 class="text-2xl md:text-3xl lg:text-[2rem] font-bold text-gray-900 leading-snug font-heading mb-4">
-                            We continue to provide the best services to all enterprises in
-                            <span class="text-brand">Indonesia and even worldwide.</span>
+                            {{ $servicesSection['heading'] ?? 'We continue to provide the best services to all enterprises in' }}
+                            <span class="text-brand">{{ $servicesSection['heading_highlight'] ?? 'Indonesia and even worldwide.' }}</span>
                         </h2>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-8 max-w-md">Delivering comprehensive tax, legal, and business advisory solutions with integrity and professional excellence.</p>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-8 max-w-md">{{ $servicesSection['description'] ?? 'Delivering comprehensive tax, legal, and business advisory solutions with integrity and professional excellence.' }}</p>
                         {{-- Arrow Navigation --}}
                         <div class="flex items-center gap-4">
                             <button @click="page = page > 0 ? page - 1 : totalPages - 1" class="w-11 h-11 border border-gray-300 rounded-full flex items-center justify-center text-gray-600 hover:border-brand hover:text-brand hover:bg-brand/5 transition-all">
