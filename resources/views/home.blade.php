@@ -448,7 +448,7 @@
                 <div>
                     <div class="mb-4">
                         @if(!empty($logo['image']))
-                            <img src="{{ $logo['image'] }}" alt="{{ $company['name'] ?? 'NEXA TAX' }}" class="h-9 w-auto object-contain brightness-0 invert">
+                            <img src="{{ $logo['image'] }}" alt="{{ $company['name'] ?? 'NEXA TAX' }}" class="h-9 md:h-10 w-auto object-contain">
                         @else
                             <div class="flex items-center gap-2">
                                 <span class="text-xl font-extrabold text-white font-heading tracking-tight">NEXA</span>
