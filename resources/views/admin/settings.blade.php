@@ -35,6 +35,7 @@
         <input type="hidden" name="section" value="stats">
         <div class="bg-white rounded-lg shadow p-6 space-y-4">
             <h3 class="font-bold text-slate-800 text-lg">Statistics</h3>
+            <p class="text-xs text-slate-400">Icon ditampilkan di samping angka statistik pada section Consultation/Our Client.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-1">Projects Count</label>
@@ -45,12 +46,43 @@
                     <input type="text" name="projects_label" value="{{ $stats['projects_label'] ?? '' }}" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary-brand">
                 </div>
                 <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Projects Icon</label>
+                    <select name="projects_icon" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary-brand">
+                        <option value="briefcase" {{ ($stats['projects_icon'] ?? 'briefcase') === 'briefcase' ? 'selected' : '' }}>Briefcase (Portofolio)</option>
+                        <option value="clipboard-check" {{ ($stats['projects_icon'] ?? '') === 'clipboard-check' ? 'selected' : '' }}>Clipboard Check (Task Done)</option>
+                        <option value="chart-bar" {{ ($stats['projects_icon'] ?? '') === 'chart-bar' ? 'selected' : '' }}>Chart Bar (Grafik)</option>
+                        <option value="folder" {{ ($stats['projects_icon'] ?? '') === 'folder' ? 'selected' : '' }}>Folder (Dokumen)</option>
+                        <option value="rocket" {{ ($stats['projects_icon'] ?? '') === 'rocket' ? 'selected' : '' }}>Rocket (Launch)</option>
+                        <option value="check-circle" {{ ($stats['projects_icon'] ?? '') === 'check-circle' ? 'selected' : '' }}>Check Circle (Selesai)</option>
+                        <option value="trophy" {{ ($stats['projects_icon'] ?? '') === 'trophy' ? 'selected' : '' }}>Trophy (Pencapaian)</option>
+                        <option value="building" {{ ($stats['projects_icon'] ?? '') === 'building' ? 'selected' : '' }}>Building (Perusahaan)</option>
+                        <option value="users" {{ ($stats['projects_icon'] ?? '') === 'users' ? 'selected' : '' }}>Users (Client)</option>
+                        <option value="shield-check" {{ ($stats['projects_icon'] ?? '') === 'shield-check' ? 'selected' : '' }}>Shield Check (Terpercaya)</option>
+                    </select>
+                </div>
+                <div></div>
+                <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-1">Experience</label>
                     <input type="text" name="experience" value="{{ $stats['experience'] ?? '' }}" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary-brand">
                 </div>
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-1">Experience Label</label>
                     <input type="text" name="experience_label" value="{{ $stats['experience_label'] ?? '' }}" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary-brand">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Experience Icon</label>
+                    <select name="experience_icon" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary-brand">
+                        <option value="clock" {{ ($stats['experience_icon'] ?? 'clock') === 'clock' ? 'selected' : '' }}>Clock (Waktu)</option>
+                        <option value="calendar" {{ ($stats['experience_icon'] ?? '') === 'calendar' ? 'selected' : '' }}>Calendar (Tahun)</option>
+                        <option value="star" {{ ($stats['experience_icon'] ?? '') === 'star' ? 'selected' : '' }}>Star (Bintang)</option>
+                        <option value="award" {{ ($stats['experience_icon'] ?? '') === 'award' ? 'selected' : '' }}>Award (Penghargaan)</option>
+                        <option value="trending-up" {{ ($stats['experience_icon'] ?? '') === 'trending-up' ? 'selected' : '' }}>Trending Up (Pertumbuhan)</option>
+                        <option value="lightning" {{ ($stats['experience_icon'] ?? '') === 'lightning' ? 'selected' : '' }}>Lightning (Cepat)</option>
+                        <option value="globe" {{ ($stats['experience_icon'] ?? '') === 'globe' ? 'selected' : '' }}>Globe (Global)</option>
+                        <option value="heart" {{ ($stats['experience_icon'] ?? '') === 'heart' ? 'selected' : '' }}>Heart (Dedikasi)</option>
+                        <option value="flag" {{ ($stats['experience_icon'] ?? '') === 'flag' ? 'selected' : '' }}>Flag (Milestone)</option>
+                        <option value="sparkles" {{ ($stats['experience_icon'] ?? '') === 'sparkles' ? 'selected' : '' }}>Sparkles (Excellence)</option>
+                    </select>
                 </div>
             </div>
             <button type="submit" class="bg-primary-brand text-white font-bold px-6 py-2 rounded text-sm hover:bg-blue-700 transition">Simpan Stats</button>

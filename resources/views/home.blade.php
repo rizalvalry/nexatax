@@ -232,15 +232,26 @@
                     </p>
 
                     {{-- Stats inline --}}
-                    <div class="flex items-center gap-8 mb-6">
-                        <div>
-                            <div class="text-3xl font-bold text-gray-900 font-heading">{{ $stats['projects'] ?? '111' }}</div>
-                            <div class="text-xs text-gray-500 mt-0.5">{{ $stats['projects_label'] ?? 'Project Completed' }}</div>
+                    @php $projectsIcon = $stats['projects_icon'] ?? 'briefcase'; $experienceIcon = $stats['experience_icon'] ?? 'clock'; @endphp
+                    <div class="flex items-stretch gap-6 mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-lg bg-brand/10 flex items-center justify-center flex-shrink-0">
+                                @include('components.stat-icon', ['icon' => $projectsIcon])
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-gray-900 font-heading leading-none">{{ $stats['projects'] ?? '111' }}</div>
+                                <div class="text-[11px] text-gray-500 mt-1">{{ $stats['projects_label'] ?? 'Project Completed' }}</div>
+                            </div>
                         </div>
-                        <div class="w-px h-10 bg-gray-200"></div>
-                        <div>
-                            <div class="text-3xl font-bold text-gray-900 font-heading">{{ $stats['experience'] ?? '5 +' }}</div>
-                            <div class="text-xs text-gray-500 mt-0.5">{{ $stats['experience_label'] ?? 'Years Experience' }}</div>
+                        <div class="w-px bg-gray-200 self-stretch"></div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-lg bg-brand/10 flex items-center justify-center flex-shrink-0">
+                                @include('components.stat-icon', ['icon' => $experienceIcon])
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-gray-900 font-heading leading-none">{{ $stats['experience'] ?? '5 +' }}</div>
+                                <div class="text-[11px] text-gray-500 mt-1">{{ $stats['experience_label'] ?? 'Years Experience' }}</div>
+                            </div>
                         </div>
                     </div>
 

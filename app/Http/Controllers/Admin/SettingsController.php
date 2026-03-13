@@ -32,8 +32,10 @@ class SettingsController extends Controller
                 'value' => [
                     'projects' => $request->input('projects'),
                     'projects_label' => $request->input('projects_label'),
+                    'projects_icon' => $request->input('projects_icon', 'briefcase'),
                     'experience' => $request->input('experience'),
                     'experience_label' => $request->input('experience_label'),
+                    'experience_icon' => $request->input('experience_icon', 'clock'),
                 ],
                 'type' => 'json', 'group' => 'stats', 'label' => 'Statistics',
             ]);
