@@ -21,7 +21,7 @@ class ServiceController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate(['title' => 'required|string|max:255', 'order' => 'integer', 'is_active' => 'boolean']);
+        $validated = $request->validate(['title' => 'required|string|max:255', 'description' => 'nullable|string', 'order' => 'integer', 'is_active' => 'boolean']);
         $validated['is_active'] = $request->has('is_active');
         Service::create($validated);
         return redirect()->route('admin.services.index')->with('success', 'Service berhasil ditambahkan.');
@@ -34,7 +34,7 @@ class ServiceController extends Controller
 
     public function update(Request $request, Service $service)
     {
-        $validated = $request->validate(['title' => 'required|string|max:255', 'order' => 'integer']);
+        $validated = $request->validate(['title' => 'required|string|max:255', 'description' => 'nullable|string', 'order' => 'integer']);
         $validated['is_active'] = $request->has('is_active');
         $service->update($validated);
         return redirect()->route('admin.services.index')->with('success', 'Service berhasil diperbarui.');

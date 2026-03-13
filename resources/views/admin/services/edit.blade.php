@@ -11,6 +11,10 @@
             @error('title') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
         </div>
         <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Description (subtext yang tampil di card)</label>
+            <textarea name="description" rows="3" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary-brand" placeholder="Contoh: Professional tax audit representation services for individuals and entities in all aspects.">{{ old('description', $service->description) }}</textarea>
+        </div>
+        <div>
             <label class="block text-sm font-semibold text-slate-700 mb-1">Order</label>
             <input type="number" name="order" value="{{ old('order', $service->order) }}" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary-brand">
         </div>
