@@ -443,7 +443,7 @@
     {{-- ==================== FOOTER (HNG-style: dark navy, 3 columns) ==================== --}}
     <footer class="bg-navy text-white pt-14 pb-6">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
                 {{-- Col 1: Brand + Social --}}
                 <div>
                     <div class="mb-4">
@@ -495,7 +495,20 @@
                     </div>
                 </div>
 
-                {{-- Col 3: Contact Form / Newsletter --}}
+                {{-- Col 3: Career --}}
+                <div>
+                    <h3 class="text-sm font-semibold text-white mb-5 font-heading">{{ $career['title'] ?? 'Career' }}</h3>
+                    <p class="text-brand text-sm font-semibold mb-3">{{ $career['subtitle'] ?? 'Open Position' }}</p>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">{{ $career['description'] ?? 'Ready for New Challenge? Apply Now!' }}</p>
+                    @if(!empty($career['email']))
+                    <div class="flex items-start gap-2">
+                        <svg class="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <a href="mailto:{{ $career['email'] }}" class="text-gray-400 text-sm hover:text-brand transition-colors break-all">{{ $career['email'] }}</a>
+                    </div>
+                    @endif
+                </div>
+
+                {{-- Col 4: Newsletter --}}
                 <div>
                     <h3 class="text-sm font-semibold text-white mb-5 font-heading">Newsletter Sign Up</h3>
                     <div class="space-y-3">

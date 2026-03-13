@@ -92,10 +92,17 @@ class HomeController extends Controller
             'label' => 'Nexa Tax Indonesia',
         ];
 
+        $career = optional(Setting::where('key', 'site.career')->first())->value ?? [
+            'title' => 'Career',
+            'subtitle' => 'Open Position',
+            'description' => 'Ready for New Challenge? Apply Now!',
+            'email' => 'recruitment@nexataxindonesia.com',
+        ];
+
         return view('home', compact(
             'banner', 'company', 'menu', 'ourfirm', 'consultation',
             'stats', 'social', 'whatsapp', 'footer', 'contactForm',
-            'services', 'testimonials', 'logo', 'clientLogos', 'insights', 'map'
+            'services', 'testimonials', 'logo', 'clientLogos', 'insights', 'map', 'career'
         ));
     }
 }

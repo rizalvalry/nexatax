@@ -17,8 +17,9 @@ class SettingsController extends Controller
         $menu = optional(Setting::where('key', 'site.menu')->first())->value ?? [];
         $contactForm = optional(Setting::where('key', 'site.contactForm')->first())->value ?? [];
         $map = optional(Setting::where('key', 'site.map')->first())->value ?? [];
+        $career = optional(Setting::where('key', 'site.career')->first())->value ?? [];
 
-        return view('admin.settings', compact('stats', 'social', 'whatsapp', 'footer', 'menu', 'contactForm', 'map'));
+        return view('admin.settings', compact('stats', 'social', 'whatsapp', 'footer', 'menu', 'contactForm', 'map', 'career'));
     }
 
     public function update(Request $request)
@@ -65,6 +66,16 @@ class SettingsController extends Controller
             Setting::updateOrCreate(['key' => 'site.footer'], [
                 'value' => ['description' => $request->input('footer_description'), 'quick_links' => $links],
                 'type' => 'json', 'group' => 'footer', 'label' => 'Footer',
+            ]);
+        } elseif ($section === 'career') {
+            Setting::updateOrCreate(['key' => 'site.career'], [
+                'value' => [
+                    'title' => $request->input('career_title', 'Career'),
+                    'subtitle' => $request->input('career_subtitle', 'Open Position'),
+                    'description' => $request->input('career_description', ''),
+                    'email' => $request->input('career_email', ''),
+                ],
+                'type' => 'json', 'group' => 'career', 'label' => 'Career',
             ]);
         }
 

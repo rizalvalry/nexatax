@@ -116,5 +116,33 @@
             <button type="submit" class="bg-primary-brand text-white font-bold px-6 py-2 rounded text-sm hover:bg-blue-700 transition">Simpan Footer</button>
         </div>
     </form>
+
+    {{-- Career --}}
+    <form action="{{ route('admin.settings.update') }}" method="POST">
+        @csrf
+        <input type="hidden" name="section" value="career">
+        <div class="bg-white rounded-lg shadow p-6 space-y-4">
+            <h3 class="font-bold text-slate-800 text-lg">Career (Footer)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Title</label>
+                    <input type="text" name="career_title" value="{{ $career['title'] ?? 'Career' }}" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary-brand">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Subtitle</label>
+                    <input type="text" name="career_subtitle" value="{{ $career['subtitle'] ?? 'Open Position' }}" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary-brand">
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Description</label>
+                <textarea name="career_description" rows="2" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary-brand">{{ $career['description'] ?? 'Ready for New Challenge? Apply Now!' }}</textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">Recruitment Email</label>
+                <input type="email" name="career_email" value="{{ $career['email'] ?? '' }}" placeholder="recruitment@nexataxindonesia.com" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-primary-brand">
+            </div>
+            <button type="submit" class="bg-primary-brand text-white font-bold px-6 py-2 rounded text-sm hover:bg-blue-700 transition">Simpan Career</button>
+        </div>
+    </form>
 </div>
 @endsection
