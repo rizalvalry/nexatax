@@ -170,19 +170,24 @@
         </div>
 
         {{-- ==================== OUR FIRM SECTION ==================== --}}
+        @php
+            $cards = $ourfirm['cards'] ?? [];
+            $cardCount = count($cards);
+            $bgColors = ['#e8f4fa', '#dceef7', '#dde9f3', '#d2e4f0'];
+        @endphp
         <section id="ourfirm" class="relative overflow-hidden">
-            @php $cards = $ourfirm['cards'] ?? []; @endphp
-            {{-- Two-tone background --}}
+            {{-- Dynamic background tiles --}}
             <div class="absolute inset-0 grid grid-cols-1 md:grid-cols-2">
-                <div class="bg-[#e8f4fa]"></div>
-                <div class="bg-[#dceef7]"></div>
+                @foreach($cards as $ci => $c)
+                <div style="background-color: {{ $bgColors[$ci % 4] }}"></div>
+                @endforeach
             </div>
             {{-- Subtle pattern overlay --}}
             <div class="absolute inset-0 opacity-[0.02]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%230047AB&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')"></div>
             <div class="relative max-w-7xl mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-2">
                     @foreach($cards as $index => $card)
-                    <div class="px-8 md:px-12 lg:px-16 py-14 md:py-20">
+                    <div class="px-8 md:px-12 lg:px-14 py-12 md:py-16 {{ $cardCount > 2 && $index >= 2 ? 'border-t border-white/40' : '' }}">
                         {{-- Blue double-chevron icon --}}
                         <div class="mb-5">
                             <svg class="w-10 h-10" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -190,16 +195,11 @@
                                 <path d="M18 30L30 18L18 6" stroke="#0047AB" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
                             </svg>
                         </div>
-                        <h3 class="text-2xl md:text-[1.75rem] font-bold text-gray-900 mb-4 font-heading leading-tight">{{ $card['title'] }}</h3>
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-4 font-heading leading-tight">{{ $card['title'] }}</h3>
                         <p class="text-gray-600 text-sm leading-relaxed mb-8 max-w-sm">{{ $card['description'] }}</p>
-                        @if($index === 0)
-                        <a href="#contact" class="inline-flex items-center gap-3 border border-gray-400 text-gray-700 text-sm font-medium px-6 py-3 rounded hover:border-brand hover:text-brand hover:bg-white/50 transition-all">
-                            Free Consultation
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
-                        </a>
-                        @else
-                        <a href="#consultation" class="inline-flex items-center gap-3 border border-gray-400 text-gray-700 text-sm font-medium px-6 py-3 rounded hover:border-brand hover:text-brand hover:bg-white/50 transition-all">
-                            About Us
+                        @if(!empty($card['button_text']))
+                        <a href="{{ $card['button_url'] ?? '#contact' }}" class="inline-flex items-center gap-3 border border-gray-400 text-gray-700 text-sm font-medium px-6 py-3 rounded hover:border-brand hover:text-brand hover:bg-white/50 transition-all">
+                            {{ $card['button_text'] }}
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
                         </a>
                         @endif

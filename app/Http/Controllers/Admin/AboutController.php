@@ -34,29 +34,14 @@ class AboutController extends Controller
         ]);
 
         // Our Firm
-        $oldOurfirm = optional(Setting::where('key', 'site.ourfirm')->first())->value ?? ['cards' => []];
-        $oldCards = $oldOurfirm['cards'] ?? [];
-
         $cards = [];
         foreach ($request->input('cards', []) as $i => $card) {
-            $cardImage = $oldCards[$i]['image'] ?? '';
-
-            if ($request->hasFile("cards.{$i}.image_file")) {
-                $request->validate(["cards.{$i}.image_file" => 'image|mimes:png,jpg,jpeg,webp|max:5120']);
-
-                // Delete old card image
-                if (!empty($cardImage) && str_starts_with($cardImage, '/storage/')) {
-                    Storage::disk('public')->delete(str_replace('/storage/', '', $cardImage));
-                }
-
-                $path = $request->file("cards.{$i}.image_file")->store('uploads/ourfirm', 'public');
-                $cardImage = '/storage/' . $path;
-            }
-
             $cards[] = [
                 'title' => $card['title'] ?? '',
                 'description' => $card['description'] ?? '',
-                'image' => $cardImage,
+                'button_text' => $card['button_text'] ?? '',
+                'button_url' => $card['button_url'] ?? '#contact',
+                'image' => $card['existing_image'] ?? '',
             ];
         }
         Setting::updateOrCreate(['key' => 'site.ourfirm'], [
