@@ -12,6 +12,30 @@
             theme: { extend: { fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] }, colors: { primary: { brand: '#007AFF', 700: '#0369a1' } } } }
         }
     </script>
+    <style>
+        /* Sidebar custom scrollbar — thin, blends with dark bg */
+        .sidebar-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(148,163,184,0.15) transparent;
+        }
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar-scroll::-webkit-scrollbar-track {
+            background: transparent;
+            margin: 8px 0;
+        }
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: rgba(148,163,184,0.15);
+            border-radius: 100px;
+        }
+        .sidebar-scroll:hover::-webkit-scrollbar-thumb {
+            background: rgba(148,163,184,0.3);
+        }
+        .sidebar-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(148,163,184,0.45);
+        }
+    </style>
 </head>
 <body class="bg-gray-50 font-sans" x-data="{ sidebarOpen: true }">
     <div class="flex min-h-screen">
@@ -29,7 +53,7 @@
                     </div>
                 </div>
             </div>
-            <nav class="p-4 space-y-1 flex-1 overflow-y-auto">
+            <nav class="p-4 space-y-1 flex-1 overflow-y-auto sidebar-scroll">
                 @php $current = request()->route()->getName(); @endphp
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded text-sm {{ str_contains($current, 'dashboard') ? 'bg-primary-brand text-white' : 'text-slate-300 hover:bg-slate-800' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
