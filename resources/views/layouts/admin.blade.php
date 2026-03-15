@@ -16,9 +16,9 @@
 <body class="bg-gray-50 font-sans" x-data="{ sidebarOpen: true }">
     <div class="flex min-h-screen">
         {{-- Sidebar --}}
-        <aside class="w-64 bg-slate-900 text-white flex-shrink-0 fixed inset-y-0 left-0 z-30 transform transition-transform lg:translate-x-0"
+        <aside class="w-64 bg-slate-900 text-white flex-shrink-0 fixed inset-y-0 left-0 z-30 transform transition-transform lg:translate-x-0 flex flex-col"
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
-            <div class="p-6 border-b border-slate-800">
+            <div class="p-6 border-b border-slate-800 flex-shrink-0">
                 <div class="flex items-center gap-2">
                     <div class="w-8 h-8 bg-primary-brand flex items-center justify-center rounded-sm rotate-45">
                         <div class="w-4 h-4 border-2 border-white -rotate-45"></div>
@@ -29,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <nav class="p-4 space-y-1">
+            <nav class="p-4 space-y-1 flex-1 overflow-y-auto">
                 @php $current = request()->route()->getName(); @endphp
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded text-sm {{ str_contains($current, 'dashboard') ? 'bg-primary-brand text-white' : 'text-slate-300 hover:bg-slate-800' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
