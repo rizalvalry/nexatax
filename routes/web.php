@@ -2,6 +2,19 @@
 
 use Illuminate\Support\Facades\Route;
 
+// One-time setup: create storage symlink (visit /setup-storage then remove this route)
+Route::get('/setup-storage', function () {
+    if (file_exists(public_path('storage'))) {
+        return 'Storage link already exists.';
+    }
+    try {
+        Illuminate\Support\Facades\Artisan::call('storage:link');
+        return 'Storage link created successfully! Please remove this route from routes/web.php for security.';
+    } catch (\Exception $e) {
+        return 'Symlink failed: ' . $e->getMessage() . ' — The fallback route will serve storage files instead.';
+    }
+});
+
 // Public routes
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');
