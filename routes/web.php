@@ -2,17 +2,37 @@
 
 use Illuminate\Support\Facades\Route;
 
-// One-time setup: create storage symlink (visit /setup-storage then remove this route)
-Route::get('/setup-storage', function () {
-    if (file_exists(public_path('storage'))) {
-        return 'Storage link already exists.';
+// Diagnostic — hapus setelah debug selesai
+Route::get('/check-assets', function () {
+    $r = [];
+    $r['APP_URL'] = config('app.url');
+    $r['public_path'] = public_path();
+    $r['storage_link_exists'] = file_exists(public_path('storage')) ? 'YES' : 'NO';
+    $r['storage_is_dir'] = is_dir(public_path('storage')) ? 'YES' : 'NO';
+    $r['storage_app_public'] = is_dir(storage_path('app/public')) ? 'YES' : 'NO';
+
+    // List files in storage/app/public
+    $dir = storage_path('app/public');
+    $files = [];
+    if (is_dir($dir)) {
+        $rii = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir));
+        $i = 0;
+        foreach ($rii as $f) {
+            if ($f->isFile() && $f->getFilename() !== '.gitignore') {
+                $files[] = str_replace(DIRECTORY_SEPARATOR, '/', str_replace($dir, '', $f->getPathname()));
+                if (++$i >= 30) break;
+            }
+        }
     }
-    try {
-        Illuminate\Support\Facades\Artisan::call('storage:link');
-        return 'Storage link created successfully! Please remove this route from routes/web.php for security.';
-    } catch (\Exception $e) {
-        return 'Symlink failed: ' . $e->getMessage() . ' — The fallback route will serve storage files instead.';
+    $r['uploaded_files'] = $files ?: ['(kosong - belum ada file upload)'];
+
+    // Cek public/assets
+    $r['public_assets_exists'] = is_dir(public_path('assets')) ? 'YES' : 'NO';
+    if (is_dir(public_path('assets'))) {
+        $r['public_assets_files'] = array_values(array_diff(scandir(public_path('assets')), ['.', '..']));
     }
+
+    return response()->json($r, 200, [], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 });
 
 // Public routes
